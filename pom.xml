@@ -29,7 +29,7 @@
 
 		<dependency>
 			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
