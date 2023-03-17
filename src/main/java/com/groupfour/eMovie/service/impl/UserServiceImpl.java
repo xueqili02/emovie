@@ -23,9 +23,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public User registerUser(String username, String password) {
-        if (username == null || password == null) {
-            return null;
-        }
         User user = new User();
         user.setUsername(username);
         user.setPassword(DigestUtils.md5DigestAsHex((password + key).getBytes()));
@@ -35,4 +32,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    public Boolean existUser(String username) {
+        return userDao.getUserByUsername(username) != null;
+    }
 }

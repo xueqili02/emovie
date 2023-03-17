@@ -3,6 +3,7 @@ package com.groupfour.eMovie.controller;
 import com.groupfour.eMovie.entity.User;
 import com.groupfour.eMovie.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +21,20 @@ public class UserController {
 
     @PostMapping("")
     public String registerUser(@RequestBody User user) {
-        User newUser = userService.registerUser(user.getUsername(), user.getPassword());
+        try {
+            Assert.notNull(user.getUsername(), "username is null");
+            Assert.notNull(user.getPassword(), "password is null");
+            if (userService.existUser(user.getUsername())) {
+
+            } else {
+                User newUser = userService.registerUser(user.getUsername(), user.getPassword());
+            }
+        } catch (Exception e) {
+
+        } finally {
+
+        }
+
         return "register";
     }
 }
