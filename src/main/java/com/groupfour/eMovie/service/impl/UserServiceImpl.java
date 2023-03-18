@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(DigestUtils.md5DigestAsHex((password + key).getBytes()));
-        user.setToken(DigestUtils.md5DigestAsHex((username + Calendar.getInstance().getTimeInMillis()).getBytes()));
+//        user.setToken(DigestUtils.md5DigestAsHex((username + Calendar.getInstance().getTimeInMillis()).getBytes()));
         int id = userDao.registerUser(user);
         user.setId(id);
         return user;
