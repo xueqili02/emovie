@@ -5,9 +5,10 @@ import com.groupfour.eMovie.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,9 +20,63 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{username}")
-    public User getUserByUsername(@PathVariable String username) {
+    public ResponseEntity<Object> getUserByUsername(@PathVariable String username) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+        Map<String, Object> map = new HashMap<String, Object>();
+
         User user = userService.getUserByUsername(username);
-        return user;
+        if (user != null) {
+            message = "Find User Info.";
+        } else {
+            message = "User does not exist.";
+        }
+
+        map.put("message", message);
+        map.put("data", user);
+        return new ResponseEntity<Object>(map, code);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody User user) {
+        HttpStatus code = null;
+        String message = "";
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        User getUser = null;
+        try {
+            if (user.getUsername() == null || user.getUsername().equals("")) {
+                code = HttpStatus.BAD_REQUEST;
+                message = "Username is null.";
+                throw new Exception("Username is null.");
+            } else if (user.getPassword() == null || user.getPassword().equals("")) {
+                code = HttpStatus.BAD_REQUEST;
+                message = "Password is null.";
+                throw new Exception("Password is null.");
+            }
+
+            getUser = userService.loginValid(user.getUsername(), user.getPassword());
+            if (getUser == null) {
+                message = "Invalid username or password.";
+                code = HttpStatus.BAD_REQUEST;
+            } else {
+                message = "Login Success.";
+                code = HttpStatus.OK;
+                if (getUser.getToken() == null || getUser.getToken().equals("")) {
+                    String token = DigestUtils.md5DigestAsHex(
+                            (getUser.getUsername() + Calendar.getInstance().getTimeInMillis()).getBytes());
+                    getUser.setToken(token);
+                    userService.updateUser(getUser);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            map.put("message", message);
+            map.put("data", getUser);
+            return new ResponseEntity<Object>(map, code);
+        }
     }
 
     @PostMapping("")

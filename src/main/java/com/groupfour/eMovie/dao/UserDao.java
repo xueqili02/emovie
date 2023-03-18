@@ -13,4 +13,10 @@ public interface UserDao {
     @Options(keyColumn = "id", keyProperty = "id", useGeneratedKeys = true)
     Integer registerUser(User user);
 
+    @Select("SELECT * FROM users WHERE username = #{username} AND password = #{password}")
+    User getUserByUsernameAndPassword(@Param("username") String username,
+                                      @Param("password") String password);
+
+    @Update("Update users SET ")
+    void updateUser(@Param );
 }

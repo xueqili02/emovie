@@ -9,4 +9,8 @@ public interface UserService {
     public User registerUser(String username, String password);
 
     public Boolean existUser(String username);
+
+    public User loginValid(String username, String password);
+
+    public void updateUser(User user);
 }

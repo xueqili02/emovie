@@ -35,4 +35,14 @@ public class UserServiceImpl implements UserService {
     public Boolean existUser(String username) {
         return userDao.getUserByUsername(username) != null;
     }
+
+    public User loginValid(String username, String password) {
+        User user = userDao.getUserByUsernameAndPassword(username,
+                DigestUtils.md5DigestAsHex((password + key).getBytes()));
+        return user;
+    }
+
+    public void updateUser(User user) {
+        userDao.updateUser(user);
+    }
 }
