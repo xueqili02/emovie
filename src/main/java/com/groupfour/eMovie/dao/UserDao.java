@@ -17,6 +17,6 @@ public interface UserDao {
     User getUserByUsernameAndPassword(@Param("username") String username,
                                       @Param("password") String password);
 
-    @Update("Update users SET ")
-    void updateUser(@Param );
+    @Update("Update users SET token = #{user.token} where username = #{user.username}")
+    void updateUser(@Param("user") User user);
 }

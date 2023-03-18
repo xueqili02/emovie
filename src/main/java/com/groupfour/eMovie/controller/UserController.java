@@ -23,7 +23,7 @@ public class UserController {
     public ResponseEntity<Object> getUserByUsername(@PathVariable String username) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         User user = userService.getUserByUsername(username);
         if (user != null) {
