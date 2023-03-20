@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    private final static String key = "groupfour";
+    private final static String KEY = "groupfour";
 
     public User getUserByUsername(String username) {
         return userDao.getUserByUsername(username);
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     public User registerUser(String username, String password) {
         User user = new User();
         user.setUsername(username);
-        user.setPassword(DigestUtils.md5DigestAsHex((password + key).getBytes()));
+        user.setPassword(DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
 //        user.setToken(DigestUtils.md5DigestAsHex((username + Calendar.getInstance().getTimeInMillis()).getBytes()));
         int id = userDao.registerUser(user);
         user.setId(id);
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     public User loginValid(String username, String password) {
         User user = userDao.getUserByUsernameAndPassword(username,
-                DigestUtils.md5DigestAsHex((password + key).getBytes()));
+                DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
         return user;
     }
 

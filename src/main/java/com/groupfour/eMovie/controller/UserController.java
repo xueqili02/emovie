@@ -62,10 +62,10 @@ public class UserController {
             } else {
                 message = "Login Success.";
                 code = HttpStatus.OK;
-                if (getUser.getToken() == null || getUser.getToken().equals("")) {
+                if (getUser.getAccessToken() == null || getUser.getAccessToken().equals("")) {
                     String token = DigestUtils.md5DigestAsHex(
                             (getUser.getUsername() + Calendar.getInstance().getTimeInMillis()).getBytes());
-                    getUser.setToken(token);
+                    getUser.setAccessToken(token);
                     userService.updateUser(getUser);
                 }
             }
