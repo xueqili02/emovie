@@ -9,10 +9,11 @@ public interface UserDao {
     @Select("SELECT * FROM users WHERE username = #{username}")
     User getUserByUsername(@Param("username") String username);
 
-    @Select("SELECT * FROM users WHERE refresh_token = #{refreshToken}")
-    User getUserByRefreshToken(@Param("username") String refreshToken);
+    @Select("SELECT * FROM users WHERE refreshToken = #{refreshToken}")
+    User getUserByRefreshToken(@Param("refreshToken") String refreshToken);
 
-    @Insert("INSERT INTO users (username, password, token) VALUES (#{username}, #{password}, #{token})")
+    @Insert("INSERT INTO users (username, password, accessToken, refreshToken)" +
+            "VALUES (#{username}, #{password}, #{accessToken}, #{refreshToken})")
     @Options(keyColumn = "id", keyProperty = "id", useGeneratedKeys = true)
     Integer registerUser(User user);
 
@@ -20,6 +21,7 @@ public interface UserDao {
     User getUserByUsernameAndPassword(@Param("username") String username,
                                       @Param("password") String password);
 
-    @Update("Update users SET token = #{user.token} where username = #{user.username}")
+    @Update("Update users SET accessToken = #{user.accessToken}, refreshToken = #{user.refreshToken}" +
+            " where username = #{user.username}")
     void updateUser(@Param("user") User user);
 }

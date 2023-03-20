@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.util.Calendar;
-
 @Service("UserServiceImpl")
 
 public class UserServiceImpl implements UserService {
@@ -26,7 +24,6 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
-//        user.setToken(DigestUtils.md5DigestAsHex((username + Calendar.getInstance().getTimeInMillis()).getBytes()));
         int id = userDao.registerUser(user);
         user.setId(id);
         return user;
@@ -37,9 +34,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public User loginValid(String username, String password) {
-        User user = userDao.getUserByUsernameAndPassword(username,
+        return userDao.getUserByUsernameAndPassword(username,
                 DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
-        return user;
     }
 
     public void updateUser(User user) {

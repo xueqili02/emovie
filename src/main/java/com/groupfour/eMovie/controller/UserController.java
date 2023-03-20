@@ -34,14 +34,14 @@ public class UserController {
 
         map.put("message", message);
         map.put("data", user);
-        return new ResponseEntity<Object>(map, code);
+        return new ResponseEntity<>(map, code);
     }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody User user) {
         HttpStatus code = null;
         String message = "";
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         User getUser = null;
         try {
@@ -63,10 +63,14 @@ public class UserController {
                 message = "Login Success.";
                 code = HttpStatus.OK;
                 if (getUser.getAccessToken() == null || getUser.getAccessToken().equals("")) {
-                    String token = DigestUtils.md5DigestAsHex(
-                            (getUser.getUsername() + Calendar.getInstance().getTimeInMillis()).getBytes());
-                    getUser.setAccessToken(token);
-                    userService.updateUser(getUser);
+                    long loginTime = Calendar.getInstance().getTimeInMillis();
+                    System.out.println("login time " + loginTime);
+                    String accessToken = DigestUtils.md5DigestAsHex((getUser.getUsername() + loginTime).getBytes());
+                    getUser.setAccessToken(accessToken);
+                    String refreshToken = DigestUtils.md5DigestAsHex((getUser.getUsername() +
+                            "refresh" + loginTime).getBytes());
+                    getUser.setRefreshToken(refreshToken);
+                    userService.updateUser(getUser); // update new tokens
                 }
             }
 
@@ -75,7 +79,7 @@ public class UserController {
         } finally {
             map.put("message", message);
             map.put("data", getUser);
-            return new ResponseEntity<Object>(map, code);
+            return new ResponseEntity<>(map, code);
         }
     }
 
@@ -112,7 +116,7 @@ public class UserController {
         } finally {
             map.put("message", message);
             map.put("data", newUser);
-            return new ResponseEntity<Object>(map, code);
+            return new ResponseEntity<>(map, code);
         }
     }
 }
