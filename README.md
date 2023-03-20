@@ -1,5 +1,5 @@
 # Movie Recommendation System - Group Four
 
-backend - Spring Boot + MySQL + Redis + MyBatis + Swagger
+backend - Spring Boot + MySQL + MyBatis
 
 frontend - Vue
