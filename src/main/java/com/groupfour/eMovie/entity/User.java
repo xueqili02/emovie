@@ -6,6 +6,15 @@ public class User {
     private String password;
     private String accessToken;
     private String refreshToken;
+    private long loginTime;
+
+    public long getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(long loginTime) {
+        this.loginTime = loginTime;
+    }
 
     public int getId() {
         return id;

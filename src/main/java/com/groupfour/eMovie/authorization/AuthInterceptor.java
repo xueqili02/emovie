@@ -63,6 +63,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                     String nowTime = Long.toString(Calendar.getInstance().getTimeInMillis());
                     String newAccessToken = DigestUtils.md5DigestAsHex((user.getUsername() + nowTime).getBytes());
                     user.setAccessToken(newAccessToken);
+                    user.setLoginTime(Long.parseLong(nowTime));
                     userDao.updateUser(user);
 
                     // set response header

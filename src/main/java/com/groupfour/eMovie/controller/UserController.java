@@ -64,13 +64,14 @@ public class UserController {
                 code = HttpStatus.OK;
                 if (getUser.getAccessToken() == null || getUser.getAccessToken().equals("")) {
                     long loginTime = Calendar.getInstance().getTimeInMillis();
+                    getUser.setLoginTime(loginTime);
                     System.out.println("login time " + loginTime);
                     String accessToken = DigestUtils.md5DigestAsHex((getUser.getUsername() + loginTime).getBytes());
                     getUser.setAccessToken(accessToken);
                     String refreshToken = DigestUtils.md5DigestAsHex((getUser.getUsername() +
                             "refresh" + loginTime).getBytes());
                     getUser.setRefreshToken(refreshToken);
-                    userService.updateUser(getUser); // update new tokens
+                    userService.updateUser(getUser); // update new tokens and loginTime
                 }
             }
 

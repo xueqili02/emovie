@@ -12,8 +12,8 @@ public interface UserDao {
     @Select("SELECT * FROM users WHERE refreshToken = #{refreshToken}")
     User getUserByRefreshToken(@Param("refreshToken") String refreshToken);
 
-    @Insert("INSERT INTO users (username, password, accessToken, refreshToken)" +
-            "VALUES (#{username}, #{password}, #{accessToken}, #{refreshToken})")
+    @Insert("INSERT INTO users (username, password, accessToken, refreshToken, loginTime)" +
+            "VALUES (#{username}, #{password}, #{accessToken}, #{refreshToken}, #{loginTime})")
     @Options(keyColumn = "id", keyProperty = "id", useGeneratedKeys = true)
     Integer registerUser(User user);
 
@@ -21,7 +21,9 @@ public interface UserDao {
     User getUserByUsernameAndPassword(@Param("username") String username,
                                       @Param("password") String password);
 
-    @Update("Update users SET accessToken = #{user.accessToken}, refreshToken = #{user.refreshToken}" +
-            " where username = #{user.username}")
+    @Update("Update users SET accessToken = #{user.accessToken}, " +
+            "refreshToken = #{user.refreshToken}, " +
+            "loginTime = #{user.loginTime} " +
+            "where username = #{user.username}")
     void updateUser(@Param("user") User user);
 }
