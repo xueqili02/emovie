@@ -2,6 +2,11 @@ package com.groupfour.eMovie.controller;
 
 import com.groupfour.eMovie.entity.User;
 import com.groupfour.eMovie.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +19,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "用户API")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @GetMapping("/{username}")
+    @Operation(summary = "通过username获取用户")
+    @Parameter(description = "用户名")
     public ResponseEntity<Object> getUserByUsername(@PathVariable String username) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
@@ -38,7 +46,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody User user) {
+    @Operation(summary = "用户登录")
+    public ResponseEntity<Object> login(@Schema(example = "{\"username\": \"lixueqi\", \"password\": \"123\"}")
+                                        @RequestBody User user) {
         HttpStatus code = null;
         String message = "";
         Map<String, Object> map = new HashMap<>();
@@ -85,7 +95,9 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> registerUser(@RequestBody User user) {
+    @Operation(summary = "用户注册")
+    public ResponseEntity<Object> registerUser(@Schema(example = "{\"username\": \"lixueqi\", \"password\": \"123\"}")
+                                               @RequestBody User user) {
         User newUser = null;
         HttpStatus code = null;
         String message = "";
