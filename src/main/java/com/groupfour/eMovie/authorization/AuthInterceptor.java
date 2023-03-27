@@ -69,9 +69,14 @@ public class AuthInterceptor implements HandlerInterceptor {
                     response.setHeader("Access-Token", newAccessToken);
                     response.setHeader("Login-Time", nowTime);
                     System.out.println("interceptor now time " + nowTime);
+
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.getWriter().println("refresh success");
+                    return false;
                 }
 
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().println("refresh token expires");
                 return false;
             }
         }
@@ -79,17 +84,19 @@ public class AuthInterceptor implements HandlerInterceptor {
         // if no refresh token, then authenticate access token
         if (accessToken == null || accessToken.equals("")) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().println("access token empty");
             return false;
         } else {
             serverAccessCypher = DigestUtils.md5DigestAsHex((accessToken + ACCESS_KEY + loginTime).getBytes());
         }
         if (clientAccessCypher != null && serverAccessCypher.trim().equals(clientAccessCypher.trim())) {
-            if ((Calendar.getInstance().getTimeInMillis() - Long.parseLong(loginTime)) / 1000 <= 300) { // 15 min
+            if ((Calendar.getInstance().getTimeInMillis() - Long.parseLong(loginTime)) / 1000 <= 900) { // 15 min
                 return true;
             }
         }
 
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.getWriter().println("access token expires or incorrect");
         return false;
     }
 }
