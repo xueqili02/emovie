@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 @Service("UserServiceImpl")
-
 public class UserServiceImpl implements UserService {
 
     @Autowired

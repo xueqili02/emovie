@@ -7,7 +7,7 @@ public class Movie {
     private String originalTitle;
     private float popularity;
     private String releaseDate;
-    private Long revenue;
+    private long revenue;
     private int runtime;
     private String title;
     private float voteAverage;
