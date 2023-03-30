@@ -5,5 +5,5 @@ import com.groupfour.eMovie.entity.Movie;
 import java.util.List;
 
 public interface MovieService {
-    List<Movie> getMovies();
+    List<Movie> getMovies(int pageNum);
 }

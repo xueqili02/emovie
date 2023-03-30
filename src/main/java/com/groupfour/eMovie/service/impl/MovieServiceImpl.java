@@ -15,8 +15,8 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieDao movieDao;
 
-    public List<Movie> getMovies() {
-        int pageSize = 10, pageNum = 1;
+    public List<Movie> getMovies(int pageNum) {
+        int pageSize = 10;
         PageHelper.startPage(pageNum, pageSize);
         return movieDao.getMovies();
     }
