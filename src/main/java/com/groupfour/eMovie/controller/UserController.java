@@ -2,19 +2,17 @@ package com.groupfour.eMovie.controller;
 
 import com.groupfour.eMovie.entity.User;
 import com.groupfour.eMovie.service.UserService;
+import com.groupfour.eMovie.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -27,10 +25,9 @@ public class UserController {
     @GetMapping("/{username}")
     @Operation(summary = "通过username获取用户")
     @Parameter(description = "用户名")
-    public ResponseEntity<Object> getUserByUsername(@PathVariable String username) {
+    public Result getUserByUsername(@PathVariable String username) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
-        Map<String, Object> map = new HashMap<>();
 
         User user = userService.getUserByUsername(username);
         if (user != null) {
@@ -39,18 +36,15 @@ public class UserController {
             message = "User does not exist.";
         }
 
-        map.put("message", message);
-        map.put("data", user);
-        return new ResponseEntity<>(map, code);
+        return new Result(code.value(), message, user);
     }
 
     @PostMapping("/login")
     @Operation(summary = "用户登录")
-    public ResponseEntity<Object> login(@Schema(example = "{\"username\": \"lixueqi\", \"password\": \"123\"}")
+    public Result login(@Schema(example = "{\"username\": \"lixueqi\", \"password\": \"123\"}")
                                         @RequestBody User user) {
         HttpStatus code = null;
         String message = "";
-        Map<String, Object> map = new HashMap<>();
 
         User getUser = null;
         try {
@@ -87,20 +81,17 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            map.put("message", message);
-            map.put("data", getUser);
-            return new ResponseEntity<>(map, code);
+            return new Result(code.value(), message, getUser);
         }
     }
 
     @PostMapping("")
     @Operation(summary = "用户注册")
-    public ResponseEntity<Object> registerUser(@Schema(example = "{\"username\": \"lixueqi\", \"password\": \"123\"}")
+    public Result registerUser(@Schema(example = "{\"username\": \"lixueqi\", \"password\": \"123\"}")
                                                @RequestBody User user) {
         User newUser = null;
         HttpStatus code = null;
         String message = "";
-        Map<String, Object> map = new HashMap<String, Object>();
 
         try {
             if (user.getUsername() == null || user.getUsername().equals("")) {
@@ -126,9 +117,7 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            map.put("message", message);
-            map.put("data", newUser);
-            return new ResponseEntity<>(map, code);
+            return new Result(code.value(), message, newUser);
         }
     }
 }
