@@ -1,7 +1,5 @@
 package com.groupfour.eMovie.utils;
 
-import org.springframework.http.HttpStatus;
-
 import java.io.Serializable;
 
 public class Result implements Serializable {

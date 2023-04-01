@@ -35,4 +35,15 @@ public class MovieController {
 
         return new Result(code.value(), message, movieList);
     }
+
+    @GetMapping("/originaltitle/{originalTitle}")
+    public Result getMovieByOriginalTitle(@PathVariable String originalTitle) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        List<Movie> movieList = movieService.getMovieByOriginalTitle(originalTitle);
+        message = "success";
+
+        return new Result(code.value(), message, movieList);
+    }
 }

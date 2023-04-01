@@ -20,4 +20,8 @@ public class MovieServiceImpl implements MovieService {
         PageHelper.startPage(pageNum, pageSize);
         return movieDao.getMovies();
     }
+
+    public List<Movie> getMovieByOriginalTitle(String originalTitle) {
+        return movieDao.getMovieByOriginalTitle("%" + originalTitle + "%");
+    }
 }

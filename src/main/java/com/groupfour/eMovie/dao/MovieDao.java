@@ -14,7 +14,7 @@ public interface MovieDao {
     @Select("SELECT * FROM movies WHERE id = #{id}")
     Movie getMovieById(@Param("id") int id);
 
-    @Select("SELECT * FROM movies WHERE originalTitle like '%#{originalTitle}%'")
+    @Select("SELECT * FROM movies WHERE originalTitle like #{originalTitle}")
     List<Movie> getMovieByOriginalTitle(@Param("originalTitle") String originalTitle);
 
     @Select("SELECT * FROM movies SORT BY popularity")
