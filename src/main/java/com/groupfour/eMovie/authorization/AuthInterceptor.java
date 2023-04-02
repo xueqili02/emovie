@@ -1,7 +1,10 @@
 package com.groupfour.eMovie.authorization;
 
+import com.google.gson.Gson;
 import com.groupfour.eMovie.dao.UserDao;
+import com.groupfour.eMovie.entity.AccessToken;
 import com.groupfour.eMovie.entity.User;
+import com.groupfour.eMovie.utils.Result;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,26 +68,25 @@ public class AuthInterceptor implements HandlerInterceptor {
                     user.setLoginTime(Long.parseLong(nowTime));
                     userDao.updateUser(user);
 
-                    // set response header
-                    response.setHeader("Access-Token", newAccessToken);
-                    response.setHeader("Login-Time", nowTime);
-                    System.out.println("interceptor now time " + nowTime);
-
-                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                    response.getWriter().println("refresh success");
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().print(new Gson().toJson(
+                            new Result(200, "refresh success",
+                                    new AccessToken(newAccessToken, nowTime))));
                     return false;
                 }
 
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                response.getWriter().println("refresh token expires");
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().print(new Gson().toJson(
+                        new Result(200, "refresh token expires", "")));
                 return false;
             }
         }
 
         // if no refresh token, then authenticate access token
         if (accessToken == null || accessToken.equals("")) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.getWriter().println("access token empty");
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().print(new Gson().toJson(
+                    new Result(200, "access token empty", "")));
             return false;
         } else {
             serverAccessCypher = DigestUtils.md5DigestAsHex((accessToken + ACCESS_KEY + loginTime).getBytes());
@@ -95,8 +97,9 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
         }
 
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.getWriter().println("access token expires or incorrect");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().print(new Gson().toJson(
+                new Result(200, "access token expires or incorrect", "")));
         return false;
     }
 }
