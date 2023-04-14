@@ -65,7 +65,7 @@ public class Movie {
         return revenue;
     }
 
-    public void setRevenue(Long revenue) {
+    public void setRevenue(long revenue) {
         this.revenue = revenue;
     }
 

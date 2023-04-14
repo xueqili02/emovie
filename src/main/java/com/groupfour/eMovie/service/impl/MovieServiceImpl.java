@@ -24,4 +24,8 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getMovieByOriginalTitle(String originalTitle) {
         return movieDao.getMovieByOriginalTitle("%" + originalTitle + "%");
     }
+
+    public List<Movie> getHotMovie() {
+        return movieDao.getHotMovie();
+    }
 }

@@ -8,4 +8,6 @@ public interface MovieService {
     List<Movie> getMovies(int pageNum);
 
     List<Movie> getMovieByOriginalTitle(String originalTitle);
+
+    List<Movie> getHotMovie();
 }

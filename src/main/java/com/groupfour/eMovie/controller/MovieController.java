@@ -46,4 +46,15 @@ public class MovieController {
 
         return new Result(code.value(), message, movieList);
     }
+
+    @GetMapping("/hotmovie")
+    public Result getHotMovie() {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        List<Movie> movieList = movieService.getHotMovie();
+        message = "success";
+
+        return new Result(code.value(), message, movieList);
+    }
 }

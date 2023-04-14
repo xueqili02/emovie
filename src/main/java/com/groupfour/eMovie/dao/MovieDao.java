@@ -24,4 +24,10 @@ public interface MovieDao {
             "#{popularity}, #{releaseDate}, #{revenue}, #{runtime}, #{title}, #{voteAverage}, #{voteCount})")
     @Options(keyColumn = "id", keyProperty = "id", useGeneratedKeys = true)
     Integer addMovie(Movie movie);
+
+    @Select("SELECT * FROM movies WHERE originalTitle = 'Spider-Man 2' or " +
+            "originalTitle = 'The Shawshank Redemption' or " +
+            "originalTitle = 'Forrest Gump' or " +
+            "originalTitle = 'Avatar'")
+    List<Movie> getHotMovie();
 }
