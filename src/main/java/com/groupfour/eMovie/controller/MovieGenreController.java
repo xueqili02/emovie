@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/moviegenre")
-@Tag(name = "电影类别API")
+@Tag(name = "电影-类别API")
 public class MovieGenreController {
 
     @Autowired
