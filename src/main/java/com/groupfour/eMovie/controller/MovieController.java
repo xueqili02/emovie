@@ -5,13 +5,11 @@ import com.groupfour.eMovie.service.MovieService;
 import com.groupfour.eMovie.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -72,5 +70,34 @@ public class MovieController {
         message = "success";
 
         return new Result(code.value(), message, movie);
+    }
+
+    @PostMapping("")
+    @Operation(summary = "插入电影metadata")
+    public Result insertMovie(@Schema(example = "{\"budget\": \"30000000\", \"originalLanguage\": \"en\"," +
+            "\"originalTitle\": \"Toy Story\", \"popularity\": \"21.946943\", \"releaseDate\": \"1995/12/15\", " +
+            "\"revenue\": \"373554033\", \"runtime\": \"81\", \"title\": \"Toy Story\", " +
+            "\"voteAverage\": \"7.7\", \"voteCount\": \"5415\", \"overview\": \"abcdefg\"}")
+            @RequestBody Movie movie) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+        Movie newMovie = null;
+
+        try {
+            if (movie.getOriginalTitle() == null || movie.getOriginalTitle().equals("")) {
+                code = HttpStatus.BAD_REQUEST;
+                message = "Original title is null.";
+                throw new Exception("Original title is null.");
+            }
+
+            newMovie = movieService.insertMovie(movie);
+            message = "success";
+            code = HttpStatus.CREATED;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return new Result(code.value(), message, newMovie);
+        }
     }
 }

@@ -32,4 +32,11 @@ public class MovieServiceImpl implements MovieService {
     public Movie getMovieById(int id) {
         return movieDao.getMovieById(id);
     }
+
+    public Movie insertMovie(Movie movie) {
+        Movie newMovie = new Movie(movie);
+        int id = movieDao.insertMovie(movie);
+        newMovie.setId(id);
+        return newMovie;
+    }
 }

@@ -12,6 +12,24 @@ public class Movie {
     private String title;
     private float voteAverage;
     private int voteCount;
+    private String overview;
+
+    public Movie() {}
+
+    public Movie(Movie movie) {
+        id = movie.getId();
+        budget = movie.getBudget();
+        originalLanguage = movie.getOriginalLanguage();
+        originalTitle = movie.getOriginalTitle();
+        popularity = movie.getPopularity();
+        releaseDate = movie.getReleaseDate();
+        revenue = movie.getRevenue();
+        runtime = movie.getRuntime();
+        title = movie.getTitle();
+        voteAverage = movie.getVoteAverage();
+        voteCount = movie.getVoteCount();
+        overview = movie.getOverview();
+    }
 
     public int getId() {
         return id;
@@ -99,5 +117,13 @@ public class Movie {
 
     public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 }

@@ -14,16 +14,19 @@ public interface MovieDao {
     @Select("SELECT * FROM movies WHERE id = #{id}")
     Movie getMovieById(@Param("id") int id);
 
-    @Select("SELECT * FROM movies WHERE originalTitle like #{originalTitle} LIMIT 10")
+    @Select("SELECT * FROM movies WHERE originalTitle like #{originalTitle} LIMIT 16")
     List<Movie> getMovieByOriginalTitle(@Param("originalTitle") String originalTitle);
 
     @Select("SELECT * FROM movies SORT BY popularity")
     List<Movie> getMovieByPopularitySorted();
 
-    @Insert("INSERT INTO movies VALUES(#{id}, #{budget}, #{originalLanguage}, #{originalTitle}, " +
-            "#{popularity}, #{releaseDate}, #{revenue}, #{runtime}, #{title}, #{voteAverage}, #{voteCount})")
+    @Insert("INSERT INTO movies(budget, originalLanguage, originalTitle, popularity, releaseDate, " +
+            "revenue, runtime, title, voteAverage, voteCount, overview) " +
+            "VALUES(#{budget}, #{originalLanguage}, #{originalTitle}, " +
+            "#{popularity}, #{releaseDate}, #{revenue}, #{runtime}, " +
+            "#{title}, #{voteAverage}, #{voteCount}, #{overview})")
     @Options(keyColumn = "id", keyProperty = "id", useGeneratedKeys = true)
-    Integer addMovie(Movie movie);
+    Integer insertMovie(Movie movie);
 
     @Select("SELECT * FROM movies WHERE originalTitle = 'Spider-Man 2' or " +
             "originalTitle = 'The Shawshank Redemption' or " +

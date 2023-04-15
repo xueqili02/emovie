@@ -12,4 +12,6 @@ public interface MovieService {
     List<Movie> getHotMovie();
 
     Movie getMovieById(int id);
+
+    Movie insertMovie(Movie movie);
 }
