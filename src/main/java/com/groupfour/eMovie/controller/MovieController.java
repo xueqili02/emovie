@@ -37,6 +37,8 @@ public class MovieController {
     }
 
     @GetMapping("/originaltitle/{originalTitle}")
+    @Operation(summary = "通过originalTitle获取电影信息")
+    @Parameter(description = "电影的originalTitle")
     public Result getMovieByOriginalTitle(@PathVariable String originalTitle) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
@@ -48,6 +50,7 @@ public class MovieController {
     }
 
     @GetMapping("/hotmovie")
+    @Operation(summary = "获取热门电影")
     public Result getHotMovie() {
         HttpStatus code = HttpStatus.OK;
         String message = "";
