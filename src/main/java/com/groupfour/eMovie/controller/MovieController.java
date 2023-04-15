@@ -100,4 +100,16 @@ public class MovieController {
             return new Result(code.value(), message, newMovie);
         }
     }
+
+    @GetMapping("/popularity")
+    @Operation(summary = "获取popularity最高的前16部电影")
+    public Result getMovieByPopularityOrdered() {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        List<Movie> movieList = movieService.getMovieByPopularityOrdered();
+        message = "success";
+
+        return new Result(code.value(), message, movieList);
+    }
 }

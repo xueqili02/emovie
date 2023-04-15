@@ -39,4 +39,8 @@ public class MovieServiceImpl implements MovieService {
         newMovie.setId(id);
         return newMovie;
     }
+
+    public List<Movie> getMovieByPopularityOrdered() {
+        return movieDao.getMovieByPopularityOrdered();
+    }
 }

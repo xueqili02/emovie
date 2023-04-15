@@ -14,4 +14,6 @@ public interface MovieService {
     Movie getMovieById(int id);
 
     Movie insertMovie(Movie movie);
+
+    List<Movie> getMovieByPopularityOrdered();
 }
