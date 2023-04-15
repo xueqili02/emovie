@@ -23,7 +23,7 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-    @GetMapping("/{pageNum}")
+    @GetMapping("/page/{pageNum}")
     @Operation(summary = "获取电影metadata, 实现分页")
     @Parameter(description = "页号")
     public Result getMovies(@PathVariable int pageNum) {
@@ -59,5 +59,18 @@ public class MovieController {
         message = "success";
 
         return new Result(code.value(), message, movieList);
+    }
+
+    @GetMapping("/id/{id}")
+    @Operation(summary = "通过电影id获取电影信息")
+    @Parameter(description = "电影id")
+    public Result getMovieById(@PathVariable int id) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        Movie movie = movieService.getMovieById(id);
+        message = "success";
+
+        return new Result(code.value(), message, movie);
     }
 }

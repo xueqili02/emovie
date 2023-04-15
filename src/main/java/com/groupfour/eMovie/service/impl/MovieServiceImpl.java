@@ -28,4 +28,8 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getHotMovie() {
         return movieDao.getHotMovie();
     }
+
+    public Movie getMovieById(int id) {
+        return movieDao.getMovieById(id);
+    }
 }

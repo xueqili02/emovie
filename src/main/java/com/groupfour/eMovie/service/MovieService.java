@@ -10,4 +10,6 @@ public interface MovieService {
     List<Movie> getMovieByOriginalTitle(String originalTitle);
 
     List<Movie> getHotMovie();
+
+    Movie getMovieById(int id);
 }
