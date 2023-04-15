@@ -16,12 +16,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 
-///**
-// * 自定义拦截器，判断此次请求是否有权限
-// * @see com.groupfour.eMovie.authorization.Authorization
-// * @author lizai
-// * @date 2016/4/13.
-// */
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
