@@ -67,7 +67,6 @@ public class UserController {
                 code = HttpStatus.OK;
                 long loginTime = Calendar.getInstance().getTimeInMillis();
                 getUser.setLoginTime(loginTime);
-                System.out.println("login time " + loginTime);
                 String accessToken = DigestUtils.md5DigestAsHex((getUser.getUsername() + loginTime).getBytes());
                 getUser.setAccessToken(accessToken);
                 String refreshToken = DigestUtils.md5DigestAsHex((getUser.getUsername() +
