@@ -48,20 +48,20 @@ public class MovieController {
 
         List<Movie> movieList = new ArrayList<>();
 
-//        Instant startTime = Instant.now();
+        Instant startTime = Instant.now();
         try {
             Indexer indexer = new Indexer();
-            movieList = indexer.indexSearch(originalTitle, "src/main/java/com/groupfour/eMovie/utils/lucene/data");
+            movieList = indexer.indexSearch(originalTitle, "src/main/java/com/groupfour/eMovie/utils/lucene/data", 2);
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        Instant endTime = Instant.now();
-//        System.out.println("Time cost for Lucene Indexing " + Duration.between(startTime, endTime));
+        Instant endTime = Instant.now();
+        System.out.println("Time cost for Lucene Indexing " + Duration.between(startTime, endTime));
 
-//        startTime = Instant.now();
-//        List<Movie> movieList2 = movieService.getMovieByOriginalTitle(originalTitle);
-//        endTime = Instant.now();
-//        System.out.println("Time cost for SQL query " + Duration.between(startTime, endTime));
+        startTime = Instant.now();
+        List<Movie> movieList2 = movieService.getMovieByOriginalTitle(originalTitle);
+        endTime = Instant.now();
+        System.out.println("Time cost for SQL query " + Duration.between(startTime, endTime));
 
         message = "success";
 

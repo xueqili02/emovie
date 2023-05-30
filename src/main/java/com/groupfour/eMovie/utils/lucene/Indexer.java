@@ -5,17 +5,11 @@ import com.groupfour.eMovie.entity.Movie;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
@@ -54,7 +48,7 @@ public class Indexer {
         writer.close();
     }
 
-    public List<Movie> indexSearch(String keyword, String indexPath) {
+    public List<Movie> indexSearch(String keyword, String indexPath, int maxEdits) {
         List<Movie> movieList = new ArrayList<>();
 
         try {
@@ -62,12 +56,15 @@ public class Indexer {
             IndexReader reader = DirectoryReader.open(directory);
             IndexSearcher searcher = new IndexSearcher(reader);
 
-            String[] searchFields = {"originalTitle"}; // 可以添加其他字段进行搜索
 
             // 使用MultiFieldQueryParser进行多字段搜索
-            // QueryParser queryParser = new MultiFieldQueryParser(searchFields, new StandardAnalyzer());
-            QueryParser queryParser = new QueryParser("originalTitle", new StandardAnalyzer());
-            Query query = queryParser.parse(keyword);
+            // String[] searchFields = {"originalTitle"}; // 可以添加其他字段进行搜索
+//            QueryParser queryParser = new MultiFieldQueryParser(searchFields, new StandardAnalyzer());
+//            QueryParser queryParser = new QueryParser("originalTitle", new StandardAnalyzer());
+//            Query query = queryParser.parse(keyword);
+
+            Term term = new Term("originalTitle", keyword);
+            Query query = new FuzzyQuery(term, maxEdits);
 
             int hitsPerPage = 16;
             TopDocs topDocs = searcher.search(query, hitsPerPage);
@@ -93,7 +90,7 @@ public class Indexer {
             }
             reader.close();
             directory.close();
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             return movieList;
