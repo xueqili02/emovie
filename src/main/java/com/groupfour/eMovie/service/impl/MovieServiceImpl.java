@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.groupfour.eMovie.dao.MovieDao;
 import com.groupfour.eMovie.entity.Movie;
 import com.groupfour.eMovie.service.MovieService;
+import com.groupfour.eMovie.utils.lucene.Indexer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public List<Movie> getMovieByOriginalTitle(String originalTitle) {
+//        try {
+//            Indexer indexer = new Indexer();
+//            indexer.indexAdd(movieDao, "src/main/java/com/groupfour/eMovie/utils/lucene/data");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return movieDao.getMovieByOriginalTitle("%" + originalTitle + "%");
     }
 

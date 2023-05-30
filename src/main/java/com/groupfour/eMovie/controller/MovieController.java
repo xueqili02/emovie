@@ -3,14 +3,19 @@ package com.groupfour.eMovie.controller;
 import com.groupfour.eMovie.entity.Movie;
 import com.groupfour.eMovie.service.MovieService;
 import com.groupfour.eMovie.utils.Result;
+import com.groupfour.eMovie.utils.lucene.Indexer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import net.sf.jsqlparser.statement.create.table.Index;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,7 +46,23 @@ public class MovieController {
         HttpStatus code = HttpStatus.OK;
         String message = "";
 
-        List<Movie> movieList = movieService.getMovieByOriginalTitle(originalTitle);
+        List<Movie> movieList = new ArrayList<>();
+
+//        Instant startTime = Instant.now();
+        try {
+            Indexer indexer = new Indexer();
+            movieList = indexer.indexSearch(originalTitle, "src/main/java/com/groupfour/eMovie/utils/lucene/data");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        Instant endTime = Instant.now();
+//        System.out.println("Time cost for Lucene Indexing " + Duration.between(startTime, endTime));
+
+//        startTime = Instant.now();
+//        List<Movie> movieList2 = movieService.getMovieByOriginalTitle(originalTitle);
+//        endTime = Instant.now();
+//        System.out.println("Time cost for SQL query " + Duration.between(startTime, endTime));
+
         message = "success";
 
         return new Result(code.value(), message, movieList);
