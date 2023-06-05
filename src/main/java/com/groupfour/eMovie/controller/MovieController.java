@@ -133,4 +133,17 @@ public class MovieController {
 
         return new Result(code.value(), message, movieList);
     }
+
+    @GetMapping("/genreid/{genreid}/page/{pageNum}")
+    @Operation(summary = "")
+    public Result getMovieByGenreId(@PathVariable int genreid,
+                                    @PathVariable int pageNum) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        List<Movie> movieList = movieService.getMovieByGenreId(genreid, pageNum);
+        message = "success";
+
+        return new Result(code.value(), message, movieList);
+    }
 }
