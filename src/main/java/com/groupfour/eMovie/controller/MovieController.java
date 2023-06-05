@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import net.sf.jsqlparser.statement.create.table.Index;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -135,7 +136,8 @@ public class MovieController {
     }
 
     @GetMapping("/genreid/{genreid}/page/{pageNum}")
-    @Operation(summary = "")
+    @Operation(summary = "通过genreid获取电影，同时实现分页")
+    @Parameter(description = "genreid: Genre ID; pageNum: 分页")
     public Result getMovieByGenreId(@PathVariable int genreid,
                                     @PathVariable int pageNum) {
         HttpStatus code = HttpStatus.OK;
