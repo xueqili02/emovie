@@ -5,6 +5,7 @@ import com.groupfour.eMovie.service.UserService;
 import com.groupfour.eMovie.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,5 +117,29 @@ public class UserController {
         } finally {
             return new Result(code.value(), message, newUser);
         }
+    }
+
+    @PatchMapping("/password/{username}")
+    @Operation(summary = "修改密码")
+    @Parameter(description = "username")
+    public Result changePassword(@PathVariable String username,
+                                 @RequestBody User patch) {
+
+        HttpStatus code = null;
+        String message = "";
+
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            code = HttpStatus.BAD_REQUEST;
+            message = "failure";
+        }
+
+        if (patch.getPassword() == null || patch.getPassword().equals("")) {
+            // todo: change password - old password, new password, md5 compare, token invalid
+        }
+
+        code = HttpStatus.OK;
+        message = "success";
+        return new Result(code.value(), message, "");
     }
 }

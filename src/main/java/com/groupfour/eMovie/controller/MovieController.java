@@ -6,6 +6,7 @@ import com.groupfour.eMovie.utils.Result;
 import com.groupfour.eMovie.utils.lucene.Indexer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import net.sf.jsqlparser.statement.create.table.Index;
@@ -138,7 +139,10 @@ public class MovieController {
 
     @GetMapping("/genreid/{genreid}/page/{pageNum}")
     @Operation(summary = "通过genreid获取电影，同时实现分页")
-    @Parameter(description = "genreid: Genre ID; pageNum: 分页")
+//    @Parameter(description = "genreid: Genre ID; pageNum: 分页")
+
+    @Parameters({@Parameter(description = "genreid"),
+                @Parameter(description = "pageNum")})
     public Result getMovieByGenreId(@PathVariable int genreid,
                                     @PathVariable int pageNum) {
         HttpStatus code = HttpStatus.OK;
