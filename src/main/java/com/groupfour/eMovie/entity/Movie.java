@@ -1,5 +1,7 @@
 package com.groupfour.eMovie.entity;
 
+import java.util.List;
+
 public class Movie {
     private int id;
     private int budget;
@@ -13,6 +15,9 @@ public class Movie {
     private float voteAverage;
     private int voteCount;
     private String overview;
+
+    private List<String> genre;
+    private List<String> keyword;
 
     public Movie() {}
 
@@ -125,5 +130,21 @@ public class Movie {
 
     public void setOverview(String overview) {
         this.overview = overview;
+    }
+
+    public List<String> getGenre() {
+        return genre;
+    }
+
+    public void setGenre(List<String> genre) {
+        this.genre = genre;
+    }
+
+    public List<String> getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(List<String> keyword) {
+        this.keyword = keyword;
     }
 }

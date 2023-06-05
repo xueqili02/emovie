@@ -53,6 +53,7 @@ public class MovieController {
         try {
             Indexer indexer = new Indexer();
             movieList = indexer.indexSearch(originalTitle, "src/main/java/com/groupfour/eMovie/utils/lucene/data", 2);
+//            movieList = movieService.setMovieGenreAndKeyword(movieList);
         } catch (Exception e) {
             e.printStackTrace();
         }

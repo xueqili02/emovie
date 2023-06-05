@@ -10,9 +10,9 @@ import java.util.List;
 @Mapper
 public interface MovieGenreDao {
 
-    @Select("SELECT * FROM movie_genres WHERE movieid = #{movieid}")
+    @Select("SELECT movieid, genreid FROM movie_genres WHERE movieid = #{movieid}")
     List<MovieGenre> getMovieGenreByMovieId(@Param("movieid") int movieid);
 
-    @Select("SELECT * FROM movie_genres WHERE genreid = #{genreid}")
+    @Select("SELECT movieid, genreid FROM movie_genres WHERE genreid = #{genreid}")
     List<MovieGenre> getMovieByGenreId(@Param("genreid") int genreid);
 }
