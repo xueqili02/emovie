@@ -17,7 +17,7 @@ public interface MovieDao {
     @Select("SELECT * FROM movies WHERE originalTitle like #{originalTitle} LIMIT 16")
     List<Movie> getMovieByOriginalTitle(@Param("originalTitle") String originalTitle);
 
-    @Select("SELECT * FROM movies ORDER BY popularity DESC LIMIT 16")
+    @Select("SELECT * FROM movies ORDER BY popularity DESC")
     List<Movie> getMovieByPopularityOrdered();
 
     @Insert("INSERT INTO movies(budget, originalLanguage, originalTitle, popularity, releaseDate, " +

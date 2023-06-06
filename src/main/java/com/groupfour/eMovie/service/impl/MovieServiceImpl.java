@@ -64,9 +64,9 @@ public class MovieServiceImpl implements MovieService {
         return newMovie;
     }
 
-    public List<Movie> getMovieByPopularityOrdered() {
-        // todo: page
-
+    public List<Movie> getMovieByPopularityOrdered(int pageNum) {
+        int pageSize = 16;
+        PageHelper.startPage(pageNum, pageSize);
         return movieDao.getMovieByPopularityOrdered();
     }
 

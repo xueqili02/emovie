@@ -125,13 +125,13 @@ public class MovieController {
         }
     }
 
-    @GetMapping("/popularity")
-    @Operation(summary = "获取popularity最高的前16部电影")
-    public Result getMovieByPopularityOrdered() {
+    @GetMapping("/popularity/page/{pageNum}")
+    @Operation(summary = "获取popularity排序后的电影，每页16部电影")
+    public Result getMovieByPopularityOrdered(@PathVariable int pageNum) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
 
-        List<Movie> movieList = movieService.getMovieByPopularityOrdered();
+        List<Movie> movieList = movieService.getMovieByPopularityOrdered(pageNum);
         message = "success";
 
         return new Result(code.value(), message, movieList);

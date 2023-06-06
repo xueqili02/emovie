@@ -15,7 +15,7 @@ public interface MovieService {
 
     Movie insertMovie(Movie movie);
 
-    List<Movie> getMovieByPopularityOrdered();
+    List<Movie> getMovieByPopularityOrdered(int pageNum);
 
     List<Movie> getMovieByGenreId(int genreid, int pageNum);
 
