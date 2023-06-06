@@ -1,5 +1,6 @@
-package com.groupfour.eMovie.authorization;
+package com.groupfour.eMovie.config;
 
+import com.groupfour.eMovie.authorization.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

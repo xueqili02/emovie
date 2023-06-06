@@ -22,7 +22,8 @@ public class UserServiceImpl implements UserService {
     public User registerUser(String username, String password) {
         User user = new User();
         user.setUsername(username);
-        user.setPassword(DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
+//        user.setPassword(DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
+        user.setPassword(password);
         int id = userDao.registerUser(user);
         user.setId(id);
         return user;
@@ -33,8 +34,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public User loginValid(String username, String password) {
-        return userDao.getUserByUsernameAndPassword(username,
-                DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
+        return userDao.getUserByUsernameAndPassword(username,password);
+//                DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
     }
 
     public void updateUser(User user) {
