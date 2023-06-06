@@ -52,9 +52,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public Movie getMovieById(int id) {
-        List<Movie> tempList = new ArrayList<>();
-        tempList.add(movieDao.getMovieById(id));
-        return setMovieGenreAndKeyword(tempList).get(0);
+        return setMovieGenreAndKeyword(movieDao.getMovieById(id));
     }
 
     public Movie insertMovie(Movie movie) {
@@ -83,23 +81,21 @@ public class MovieServiceImpl implements MovieService {
         return movieList;
     }
 
-    public List<Movie> setMovieGenreAndKeyword(List<Movie> movieList) {
-        for (Movie movie: movieList) {
-            List<MovieGenre> movieGenres = movieGenreDao.getMovieGenreByMovieId(movie.getId()); // 1 sql
-            List<String> movieGenresString = new ArrayList<>();
-            for (MovieGenre mg: movieGenres) {
-                movieGenresString.add(genreDao.getGenreById(mg.getGenreid()).getGenre()); // multiple sql
-            }
-            movie.setGenre(movieGenresString);
-
-            List<MovieKeyword> movieKeywords = movieKeywordDao.getMovieKeywordByMovieId(movie.getId());
-            List<String> movieKeywordsString = new ArrayList<>();
-            for (MovieKeyword mk: movieKeywords) {
-                movieKeywordsString.add(keywordDao.getKeywordById(mk.getKeywordid()).getKeyword());
-            }
-            movie.setKeyword(movieKeywordsString);
+    public Movie setMovieGenreAndKeyword(Movie movie) {
+        List<MovieGenre> movieGenres = movieGenreDao.getMovieGenreByMovieId(movie.getId()); // 1 sql
+        List<String> movieGenresString = new ArrayList<>();
+        for (MovieGenre mg : movieGenres) {
+            movieGenresString.add(genreDao.getGenreById(mg.getGenreid()).getGenre()); // multiple sql
         }
+        movie.setGenre(movieGenresString);
 
-        return movieList;
+        List<MovieKeyword> movieKeywords = movieKeywordDao.getMovieKeywordByMovieId(movie.getId());
+        List<String> movieKeywordsString = new ArrayList<>();
+        for (MovieKeyword mk : movieKeywords) {
+            movieKeywordsString.add(keywordDao.getKeywordById(mk.getKeywordid()).getKeyword());
+        }
+        movie.setKeyword(movieKeywordsString);
+
+        return movie;
     }
 }

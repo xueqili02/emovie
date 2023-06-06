@@ -19,5 +19,5 @@ public interface MovieService {
 
     List<Movie> getMovieByGenreId(int genreid, int pageNum);
 
-    List<Movie> setMovieGenreAndKeyword(List<Movie> movieList);
+    Movie setMovieGenreAndKeyword(Movie movie);
 }
