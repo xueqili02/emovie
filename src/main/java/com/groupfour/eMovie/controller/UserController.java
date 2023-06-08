@@ -124,6 +124,7 @@ public class UserController {
     @Operation(summary = "修改密码")
     @Parameter(description = "username")
     public Result changePassword(@PathVariable String username,
+                                 @Schema(example = "{\"oldPassword\": \"md5\", \"newPassword\": \"md5\"}")
                                  @RequestBody UserChangePassword patch) {
         HttpStatus code = null;
         String message = "";
@@ -137,7 +138,6 @@ public class UserController {
 
         if (patch.getOldPassword() == null || patch.getOldPassword().equals("") ||
             patch.getNewPassword() == null || patch.getNewPassword().equals("")) {
-            // todo: change password - old password, new password, md5 compare, token invalid
             code = HttpStatus.BAD_REQUEST;
             message = "Password is null.";
             return new Result(code.value(), message, "");

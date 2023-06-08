@@ -168,7 +168,7 @@ public class MovieController {
 
     @GetMapping("/link/{id}")
     @Operation(summary = "通过电影id，获取对应的链接")
-    @Parameter(description = "")
+    @Parameter(description = "电影id")
     public Result getMovieLink(@PathVariable int id) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
