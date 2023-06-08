@@ -1,5 +1,6 @@
 package com.groupfour.eMovie.dao;
 
+import com.groupfour.eMovie.entity.Link;
 import com.groupfour.eMovie.entity.Movie;
 import com.groupfour.eMovie.entity.RecommendHybrid;
 import com.groupfour.eMovie.entity.RecommendOverview;
@@ -41,4 +42,7 @@ public interface MovieDao {
 
     @Select("SELECT * FROM recommend_hybrid WHERE movieid = #{id}")
     List<RecommendHybrid> getMovieRecommendHybridById(@Param("id") int id);
+
+    @Select("SELECT * FROM links WHERE tmdbid = #{id}")
+    Link getMovieLink(@Param("id")int id);
 }

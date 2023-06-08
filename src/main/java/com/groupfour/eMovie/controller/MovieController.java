@@ -1,5 +1,6 @@
 package com.groupfour.eMovie.controller;
 
+import com.groupfour.eMovie.entity.Link;
 import com.groupfour.eMovie.entity.Movie;
 import com.groupfour.eMovie.service.MovieService;
 import com.groupfour.eMovie.utils.Result;
@@ -102,7 +103,7 @@ public class MovieController {
             "\"originalTitle\": \"Toy Story\", \"popularity\": \"21.946943\", \"releaseDate\": \"1995/12/15\", " +
             "\"revenue\": \"373554033\", \"runtime\": \"81\", \"title\": \"Toy Story\", " +
             "\"voteAverage\": \"7.7\", \"voteCount\": \"5415\", \"overview\": \"abcdefg\"}")
-            @RequestBody Movie movie) {
+                              @RequestBody Movie movie) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
         Movie newMovie = null;
@@ -163,5 +164,18 @@ public class MovieController {
         message = "success";
 
         return new Result(code.value(), message, movieList);
+    }
+
+    @GetMapping("/link/{id}")
+    @Operation(summary = "通过电影id，获取对应的链接")
+    @Parameter(description = "")
+    public Result getMovieLink(@PathVariable int id) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        Link link = movieService.getMovieLink(id);
+        message = "success";
+
+        return new Result(code.value(), message, link);
     }
 }

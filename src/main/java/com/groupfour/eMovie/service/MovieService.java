@@ -1,5 +1,6 @@
 package com.groupfour.eMovie.service;
 
+import com.groupfour.eMovie.entity.Link;
 import com.groupfour.eMovie.entity.Movie;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface MovieService {
     Movie setMovieGenreAndKeyword(Movie movie);
 
     List<Movie> getMovieRecommendById(int id);
+
+    Link getMovieLink(int id);
 }

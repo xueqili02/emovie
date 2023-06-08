@@ -115,4 +115,9 @@ public class MovieServiceImpl implements MovieService {
 
         return movieList;
     }
+
+    public Link getMovieLink(int id){
+        Link link = movieDao.getMovieLink(id);
+        return link;
+    }
 }
