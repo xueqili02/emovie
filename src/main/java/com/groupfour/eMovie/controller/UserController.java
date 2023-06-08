@@ -1,6 +1,7 @@
 package com.groupfour.eMovie.controller;
 
 import com.groupfour.eMovie.entity.User;
+import com.groupfour.eMovie.entity.UserChangePassword;
 import com.groupfour.eMovie.service.UserService;
 import com.groupfour.eMovie.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -123,19 +124,28 @@ public class UserController {
     @Operation(summary = "修改密码")
     @Parameter(description = "username")
     public Result changePassword(@PathVariable String username,
-                                 @RequestBody User patch) {
-
+                                 @RequestBody UserChangePassword patch) {
         HttpStatus code = null;
         String message = "";
 
         User user = userService.getUserByUsername(username);
         if (user == null) {
             code = HttpStatus.BAD_REQUEST;
-            message = "failure";
+            message = "User does not exist.";
+            return new Result(code.value(), message, "");
         }
 
-        if (patch.getPassword() == null || patch.getPassword().equals("")) {
+        if (patch.getOldPassword() == null || patch.getOldPassword().equals("") ||
+            patch.getNewPassword() == null || patch.getNewPassword().equals("")) {
             // todo: change password - old password, new password, md5 compare, token invalid
+            code = HttpStatus.BAD_REQUEST;
+            message = "Password is null.";
+            return new Result(code.value(), message, "");
+        }
+
+        // old password matches
+        if (user.getPassword() != null && patch.getOldPassword().equals(user.getPassword())) {
+            userService.changePassword(patch.getNewPassword(), username);
         }
 
         code = HttpStatus.OK;

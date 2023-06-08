@@ -26,4 +26,8 @@ public interface UserDao {
             "loginTime = #{user.loginTime} " +
             "where username = #{user.username}")
     void updateUser(@Param("user") User user);
+
+    @Update("UPDATE users SET password = #{newPassword} WHERE username = #{username}")
+    void changePassword(@Param("newPassword") String newPassword,
+                        @Param("username") String username);
 }

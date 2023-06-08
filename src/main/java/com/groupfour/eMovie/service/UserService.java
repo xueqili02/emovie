@@ -13,4 +13,6 @@ public interface UserService {
     User loginValid(String username, String password);
 
     void updateUser(User user);
+
+    void changePassword(String newPassword, String username);
 }
