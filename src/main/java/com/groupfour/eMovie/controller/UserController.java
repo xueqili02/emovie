@@ -146,6 +146,12 @@ public class UserController {
         // old password matches
         if (user.getPassword() != null && patch.getOldPassword().equals(user.getPassword())) {
             userService.changePassword(patch.getNewPassword(), username);
+        } else if (user.getPassword() == null) {
+            code = HttpStatus.BAD_REQUEST;
+            message = "Cannot find user password.";
+        } else {
+            code = HttpStatus.BAD_REQUEST;
+            message = "Old password does not match.";
         }
 
         code = HttpStatus.OK;
