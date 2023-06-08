@@ -20,4 +20,6 @@ public interface MovieService {
     List<Movie> getMovieByGenreId(int genreid, int pageNum);
 
     Movie setMovieGenreAndKeyword(Movie movie);
+
+    List<Movie> getMovieRecommendById(int id);
 }

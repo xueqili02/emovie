@@ -2,9 +2,7 @@ package com.groupfour.eMovie.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.groupfour.eMovie.dao.*;
-import com.groupfour.eMovie.entity.Movie;
-import com.groupfour.eMovie.entity.MovieGenre;
-import com.groupfour.eMovie.entity.MovieKeyword;
+import com.groupfour.eMovie.entity.*;
 import com.groupfour.eMovie.service.MovieService;
 import com.groupfour.eMovie.utils.lucene.Indexer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,5 +95,24 @@ public class MovieServiceImpl implements MovieService {
         movie.setKeyword(movieKeywordsString);
 
         return movie;
+    }
+
+    public List<Movie> getMovieRecommendById(int id) {
+        List<RecommendOverview> movieOverviewList = movieDao.getMovieRecommendOverviewById(id);
+        List<RecommendHybrid> movieHybridList = movieDao.getMovieRecommendHybridById(id);
+        List<Movie> movieList = new ArrayList<>();
+
+        movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie1()));
+        movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie2()));
+        movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie3()));
+        movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie4()));
+
+
+        movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie9()));
+        movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie8()));
+        movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie7()));
+        movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie6()));
+
+        return movieList;
     }
 }

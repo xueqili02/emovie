@@ -139,8 +139,6 @@ public class MovieController {
 
     @GetMapping("/genreid/{genreid}/page/{pageNum}")
     @Operation(summary = "通过genreid获取电影，同时实现分页")
-//    @Parameter(description = "genreid: Genre ID; pageNum: 分页")
-
     @Parameters({@Parameter(description = "genreid"),
                 @Parameter(description = "pageNum")})
     public Result getMovieByGenreId(@PathVariable int genreid,
@@ -149,6 +147,19 @@ public class MovieController {
         String message = "";
 
         List<Movie> movieList = movieService.getMovieByGenreId(genreid, pageNum);
+        message = "success";
+
+        return new Result(code.value(), message, movieList);
+    }
+
+    @GetMapping("/recommend/movieid/{id}")
+    @Operation(summary = "通过电影id，获取对应的推荐电影，hybrid+overview")
+    @Parameter(description = "movie id")
+    public Result getMovieRecommendById(@PathVariable int id) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        List<Movie> movieList = movieService.getMovieRecommendById(id);
         message = "success";
 
         return new Result(code.value(), message, movieList);

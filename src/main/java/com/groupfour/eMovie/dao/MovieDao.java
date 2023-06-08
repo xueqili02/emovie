@@ -1,6 +1,8 @@
 package com.groupfour.eMovie.dao;
 
 import com.groupfour.eMovie.entity.Movie;
+import com.groupfour.eMovie.entity.RecommendHybrid;
+import com.groupfour.eMovie.entity.RecommendOverview;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -33,4 +35,10 @@ public interface MovieDao {
             "SELECT * FROM movies WHERE originalTitle = 'Forrest Gump' union all " +
             "SELECT * FROM movies WHERE originalTitle = 'Avatar'")
     List<Movie> getHotMovie();
+
+    @Select("SELECT * FROM recommend_overview WHERE movieid = #{id}")
+    List<RecommendOverview> getMovieRecommendOverviewById(@Param("id") int id);
+
+    @Select("SELECT * FROM recommend_hybrid WHERE movieid = #{id}")
+    List<RecommendHybrid> getMovieRecommendHybridById(@Param("id") int id);
 }
