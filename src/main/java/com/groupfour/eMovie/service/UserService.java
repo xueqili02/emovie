@@ -1,7 +1,10 @@
 package com.groupfour.eMovie.service;
 
 import com.groupfour.eMovie.entity.Rating;
+import com.groupfour.eMovie.entity.RatingRecord;
 import com.groupfour.eMovie.entity.User;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -18,4 +21,6 @@ public interface UserService {
     void changePassword(String newPassword, String username);
 
     void rateMovie(Rating rating);
+
+    List<RatingRecord> getRatingRecord(int uid);
 }

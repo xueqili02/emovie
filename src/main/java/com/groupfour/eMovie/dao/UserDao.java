@@ -4,6 +4,8 @@ import com.groupfour.eMovie.entity.Rating;
 import com.groupfour.eMovie.entity.User;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface UserDao {
 
@@ -34,4 +36,7 @@ public interface UserDao {
 
     @Insert("INSERT INTO movie_ratings(uid, movieid, rating) VALUES(#{uid}, #{movieid}, #{rating})")
     void rateMovie(Rating rating);
+
+    @Select("SELECT * FROM movie_ratings WHERE uid = #{uid}")
+    List<Rating> getRatings(@Param("uid") int uid);
 }

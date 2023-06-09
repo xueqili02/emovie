@@ -2,12 +2,13 @@ package com.groupfour.eMovie.service.impl;
 
 import com.groupfour.eMovie.dao.MovieDao;
 import com.groupfour.eMovie.dao.UserDao;
-import com.groupfour.eMovie.entity.Link;
-import com.groupfour.eMovie.entity.Rating;
-import com.groupfour.eMovie.entity.User;
+import com.groupfour.eMovie.entity.*;
 import com.groupfour.eMovie.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service("UserServiceImpl")
 public class UserServiceImpl implements UserService {
@@ -55,5 +56,17 @@ public class UserServiceImpl implements UserService {
         Link link = movieDao.getMovieLink(rating.getMovieid());
         rating.setMovieid(link.getId());
         userDao.rateMovie(rating);
+    }
+
+    public List<RatingRecord> getRatingRecord(int uid) {
+        List<Rating> ratingList = userDao.getRatings(uid); // uid, movieid, rating
+        List<RatingRecord> recordList = new ArrayList<>();
+        // convert id
+        for (Rating r: ratingList) {
+            int tmdbid = movieDao.getTmdbidById(r.getMovieid());
+            Movie movie = movieDao.getMovieById(tmdbid);
+            recordList.add(new RatingRecord(movie.getOriginalTitle(), r.getRating()));
+        }
+        return recordList;
     }
 }

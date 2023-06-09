@@ -49,6 +49,6 @@ public class GenreController {
         // todo insert a new genre, 调用genreService中的方法（需要新写）
         // 逻辑：判断genre的属性是否为空，空则返回错误信息，不为空则调用genreService的方法
 
-        return new Result(code.value(), message, );
+        return new Result(code.value(), message, null);
     }
 }

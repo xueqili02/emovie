@@ -1,6 +1,7 @@
 package com.groupfour.eMovie.controller;
 
 import com.groupfour.eMovie.entity.Rating;
+import com.groupfour.eMovie.entity.RatingRecord;
 import com.groupfour.eMovie.entity.User;
 import com.groupfour.eMovie.entity.UserChangePassword;
 import com.groupfour.eMovie.service.UserService;
@@ -16,6 +17,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -172,5 +174,19 @@ public class UserController {
         message = "success";
 
         return new Result(code.value(), message, "");
+    }
+
+    @GetMapping("/ratingrecord/{uid}")
+    @Operation(summary = "获取评分记录")
+    @Parameter(description = "user id")
+    public Result getRatingRecord(@PathVariable int uid) {
+        HttpStatus code = null;
+        String message = "";
+
+        List<RatingRecord> recordList = userService.getRatingRecord(uid);
+        code = HttpStatus.OK;
+        message = "success";
+
+        return new Result(code.value(), message, recordList);
     }
 }
