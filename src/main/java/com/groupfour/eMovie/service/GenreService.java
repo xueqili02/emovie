@@ -8,4 +8,7 @@ public interface GenreService {
     List<Genre> getGenres();
 
     Genre getGenreById(int genreid);
+
+    // todo 新方法 声明
+
 }

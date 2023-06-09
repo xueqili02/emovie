@@ -21,4 +21,7 @@ public class GenreServiceImpl implements GenreService {
     public Genre getGenreById(int genreid) {
         return genreDao.getGenreById(genreid);
     }
+
+    // todo 新方法 实现
+    // 逻辑：将genre对象传入genreDao中
 }

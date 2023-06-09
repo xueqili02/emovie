@@ -8,10 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,5 +37,18 @@ public class GenreController {
         String message = "success";
 
         return new Result(code.value(), message, genreService.getGenreById(genreid));
+    }
+
+    // todo complete the method
+    @PostMapping("")
+    @Operation(summary = "")
+    public Result insertGenre(@RequestBody Genre genre) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "success";
+
+        // todo insert a new genre, 调用genreService中的方法（需要新写）
+        // 逻辑：判断genre的属性是否为空，空则返回错误信息，不为空则调用genreService的方法
+
+        return new Result(code.value(), message, );
     }
 }
