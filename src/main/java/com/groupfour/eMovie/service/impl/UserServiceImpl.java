@@ -30,7 +30,8 @@ public class UserServiceImpl implements UserService {
         user.setUsername(username);
 //        user.setPassword(DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
         user.setPassword(password);
-        int id = userDao.registerUser(user);
+        userDao.registerUser(user);
+        int id = user.getId();
         user.setId(id);
         return user;
     }

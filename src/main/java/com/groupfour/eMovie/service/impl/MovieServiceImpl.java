@@ -60,7 +60,8 @@ public class MovieServiceImpl implements MovieService {
 
     public Movie insertMovie(Movie movie) {
         Movie newMovie = new Movie(movie);
-        int id = movieDao.insertMovie(movie);
+        movieDao.insertMovie(movie);
+        int id = movie.getId();
         newMovie.setId(id);
         return newMovie;
     }
