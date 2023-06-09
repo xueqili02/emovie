@@ -178,4 +178,17 @@ public class MovieController {
 
         return new Result(code.value(), message, link);
     }
+
+    @GetMapping("/recommend/uid/{uid}")
+    @Operation(summary = "根据用户评分推荐电影")
+    @Parameter(description = "user id")
+    public Result getRecommendByRating(@PathVariable int uid) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        List<Movie> movieList = movieService.getRecommendByRating(uid);
+        message = "success";
+
+        return new Result(code.value(), message, movieList);
+    }
 }

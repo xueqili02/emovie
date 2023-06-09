@@ -25,4 +25,6 @@ public interface MovieService {
     List<Movie> getMovieRecommendById(int id);
 
     Link getMovieLink(int id);
+
+    List<Movie> getRecommendByRating(int uid);
 }

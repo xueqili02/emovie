@@ -1,15 +1,17 @@
 package com.groupfour.eMovie.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.google.gson.Gson;
 import com.groupfour.eMovie.dao.*;
 import com.groupfour.eMovie.entity.*;
 import com.groupfour.eMovie.service.MovieService;
-import com.groupfour.eMovie.utils.lucene.Indexer;
+import com.groupfour.eMovie.utils.RunPy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service("MovieServiceImpl")
 public class MovieServiceImpl implements MovieService {
@@ -28,6 +30,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private KeywordDao keywordDao;
+
+    @Autowired
+    private RatingDao ratingDao;
 
     public List<Movie> getMovies(int pageNum) {
         int pageSize = 16;
@@ -119,5 +124,28 @@ public class MovieServiceImpl implements MovieService {
     public Link getMovieLink(int id){
         Link link = movieDao.getMovieLink(id);
         return link;
+    }
+
+    public List<Movie> getRecommendByRating(int uid) {
+        List<Rating> userRatingList = ratingDao.getLinkByUid(uid);
+        List<RatingRecommend> ratingRecommendList = new ArrayList<>();
+        // movieid convert to id
+//        for (Rating r: userRatingList) {
+//            Link link = movieDao.getMovieLink(r.getMovieid());
+//            r.setMovieid(link.getId());
+//        }
+        for (Rating r: userRatingList) {
+            ratingRecommendList.add(new RatingRecommend(r));
+        }
+
+        Gson gson = new Gson();
+        String json = gson.toJson(ratingRecommendList).replace("\"", "'");
+        List<Integer> movieIdList = RunPy.getRecommendIdByPy(json);
+        List<Movie> movieList = new ArrayList<>();
+        for (Integer id: movieIdList) {
+            movieList.add(movieDao.getMovieById(id));
+        }
+
+        return movieList;
     }
 }
