@@ -9,6 +9,5 @@ public interface GenreService {
 
     Genre getGenreById(int genreid);
 
-    // todo 新方法 声明
-
+    Genre insertGenre(Genre genre);
 }

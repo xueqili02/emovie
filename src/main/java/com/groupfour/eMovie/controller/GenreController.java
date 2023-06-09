@@ -5,6 +5,7 @@ import com.groupfour.eMovie.service.GenreService;
 import com.groupfour.eMovie.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,16 +40,21 @@ public class GenreController {
         return new Result(code.value(), message, genreService.getGenreById(genreid));
     }
 
-    // todo complete the method
     @PostMapping("")
-    @Operation(summary = "")
-    public Result insertGenre(@RequestBody Genre genre) {
-        HttpStatus code = HttpStatus.OK;
+    @Operation(summary = "插入genre")
+    public Result insertGenre(@Schema(example = "{\"genre\": \"Adventure\"}")
+                                @RequestBody Genre genre) {
+        HttpStatus code = HttpStatus.CREATED;
         String message = "success";
+        Genre result = null;
 
-        // todo insert a new genre, 调用genreService中的方法（需要新写）
-        // 逻辑：判断genre的属性是否为空，空则返回错误信息，不为空则调用genreService的方法
+        if (genre.getGenre() == null || genre.getGenre().equals("")) {
+            code = HttpStatus.BAD_REQUEST;
+            message = "Genre is null.";
+        } else {
+            result = this.genreService.insertGenre(genre);
+        }
 
-        return new Result(code.value(), message, null);
+        return new Result(code.value(), message, result);
     }
 }
