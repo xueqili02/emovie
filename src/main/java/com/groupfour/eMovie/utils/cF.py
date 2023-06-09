@@ -54,7 +54,7 @@ if __name__ == '__main__':
     pearsonDF.index = range(len(pearsonDF))
 
     topUsers = pearsonDF.sort_values(by='similarityIndex', ascending=False)
-    topUsers =topUsers[0:30]
+    topUsers =topUsers[0:20]
     topUsersRating=topUsers.merge(rating, left_on='userId', right_on='userId', how='inner')
 
     topUsersRating['weightedRating'] = topUsersRating['similarityIndex'] * topUsersRating['rating']
