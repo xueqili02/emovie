@@ -143,7 +143,7 @@ public class MovieServiceImpl implements MovieService {
         List<Integer> movieIdList = RunPy.getRecommendIdByPy(json);
         List<Movie> movieList = new ArrayList<>();
         for (Integer id: movieIdList) {
-            movieList.add(movieDao.getMovieById(id));
+            movieList.add(movieDao.getMovieById(movieDao.getTmdbidById(id)));
         }
 
         return movieList;

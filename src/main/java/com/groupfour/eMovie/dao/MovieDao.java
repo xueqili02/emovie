@@ -45,4 +45,7 @@ public interface MovieDao {
 
     @Select("SELECT * FROM links WHERE tmdbid = #{id}")
     Link getMovieLink(@Param("id")int id);
+
+    @Select("SELECT tmdbid FROM links WHERE id = #{id}")
+    Integer getTmdbidById(@Param("id") int id);
 }
