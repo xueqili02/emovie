@@ -4,7 +4,6 @@ public class Rating {
     private int uid;
     private int movieid;
     private int rating;
-    private long timestamp;
 
     public int getUid() {
         return uid;
@@ -28,13 +27,5 @@ public class Rating {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 }

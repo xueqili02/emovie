@@ -1,16 +1,16 @@
 package com.groupfour.eMovie.entity;
 
 public class Link {
-    private int movieid;
+    private int id;
     private int imdbid;
     private int tmdbid;
 
-    public int getMovieid() {
-        return movieid;
+    public int getId() {
+        return id;
     }
 
-    public void setMovieid(int movieid) {
-        this.movieid = movieid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getImdbid() {

@@ -1,5 +1,6 @@
 package com.groupfour.eMovie.service;
 
+import com.groupfour.eMovie.entity.Rating;
 import com.groupfour.eMovie.entity.User;
 
 public interface UserService {
@@ -15,4 +16,6 @@ public interface UserService {
     void updateUser(User user);
 
     void changePassword(String newPassword, String username);
+
+    void rateMovie(Rating rating);
 }

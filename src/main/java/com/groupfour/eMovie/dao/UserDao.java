@@ -1,5 +1,6 @@
 package com.groupfour.eMovie.dao;
 
+import com.groupfour.eMovie.entity.Rating;
 import com.groupfour.eMovie.entity.User;
 import org.apache.ibatis.annotations.*;
 
@@ -30,4 +31,7 @@ public interface UserDao {
     @Update("UPDATE users SET password = #{newPassword} WHERE username = #{username}")
     void changePassword(@Param("newPassword") String newPassword,
                         @Param("username") String username);
+
+    @Insert("INSERT INTO movie_ratings(uid, movieid, rating) VALUES(#{uid}, #{movieid}, #{rating})")
+    void rateMovie(Rating rating);
 }

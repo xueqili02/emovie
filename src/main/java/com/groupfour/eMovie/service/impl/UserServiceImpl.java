@@ -1,17 +1,22 @@
 package com.groupfour.eMovie.service.impl;
 
+import com.groupfour.eMovie.dao.MovieDao;
 import com.groupfour.eMovie.dao.UserDao;
+import com.groupfour.eMovie.entity.Link;
+import com.groupfour.eMovie.entity.Rating;
 import com.groupfour.eMovie.entity.User;
 import com.groupfour.eMovie.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 @Service("UserServiceImpl")
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private MovieDao movieDao;
 
     private final static String KEY = "groupfour";
 
@@ -44,5 +49,11 @@ public class UserServiceImpl implements UserService {
 
     public void changePassword(String newPassword, String username) {
         userDao.changePassword(newPassword, username);
+    }
+
+    public void rateMovie(Rating rating) {
+        Link link = movieDao.getMovieLink(rating.getMovieid());
+        rating.setMovieid(link.getId());
+        userDao.rateMovie(rating);
     }
 }

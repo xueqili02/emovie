@@ -1,5 +1,6 @@
 package com.groupfour.eMovie.controller;
 
+import com.groupfour.eMovie.entity.Rating;
 import com.groupfour.eMovie.entity.User;
 import com.groupfour.eMovie.entity.UserChangePassword;
 import com.groupfour.eMovie.service.UserService;
@@ -155,6 +156,20 @@ public class UserController {
             code = HttpStatus.BAD_REQUEST;
             message = "Old password does not match.";
         }
+
+        return new Result(code.value(), message, "");
+    }
+
+    @PostMapping("/rating")
+    @Operation(summary = "用户评分")
+    public Result rateMovie(@Schema(example = "{\"uid\": \"1\", \"movieid\": \"862\", \"rating\": \"5\"}")
+                                @RequestBody Rating rating) {
+        HttpStatus code = null;
+        String message = "";
+
+        userService.rateMovie(rating);
+        code = HttpStatus.OK;
+        message = "success";
 
         return new Result(code.value(), message, "");
     }
