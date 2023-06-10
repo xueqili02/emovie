@@ -2,9 +2,9 @@ package com.groupfour.eMovie.entity;
 
 public class RatingRecord {
     private String originalTitle;
-    private int rating;
+    private float rating;
 
-    public RatingRecord(String originalTitle, int rating) {
+    public RatingRecord(String originalTitle, float rating) {
         this.originalTitle = originalTitle;
         this.rating = rating;
     }
@@ -17,11 +17,11 @@ public class RatingRecord {
         this.originalTitle = originalTitle;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 }

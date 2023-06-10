@@ -2,7 +2,7 @@ package com.groupfour.eMovie.entity;
 
 public class RatingRecommend {
     private int id;
-    private int rating;
+    private float rating;
 
     public RatingRecommend(Rating rating) {
         this.id = rating.getMovieid();
@@ -17,11 +17,11 @@ public class RatingRecommend {
         this.id = id;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 }
