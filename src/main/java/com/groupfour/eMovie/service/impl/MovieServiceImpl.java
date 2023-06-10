@@ -108,16 +108,19 @@ public class MovieServiceImpl implements MovieService {
         List<RecommendHybrid> movieHybridList = movieDao.getMovieRecommendHybridById(id);
         List<Movie> movieList = new ArrayList<>();
 
-        movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie1()));
-        movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie2()));
-        movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie3()));
-        movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie4()));
+        if (movieHybridList.size() != 0) {
+            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie1()));
+            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie2()));
+            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie3()));
+            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie4()));
+        }
 
-
-        movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie9()));
-        movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie8()));
-        movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie7()));
-        movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie6()));
+        if (movieOverviewList.size() != 0) {
+            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie9()));
+            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie8()));
+            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie7()));
+            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie6()));
+        }
 
         return movieList;
     }
