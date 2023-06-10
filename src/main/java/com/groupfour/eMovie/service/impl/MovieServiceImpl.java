@@ -9,6 +9,8 @@ import com.groupfour.eMovie.utils.RunPy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,11 +135,7 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getRecommendByRating(int uid) {
         List<Rating> userRatingList = ratingDao.getLinkByUid(uid);
         List<RatingRecommend> ratingRecommendList = new ArrayList<>();
-        // movieid convert to id
-//        for (Rating r: userRatingList) {
-//            Link link = movieDao.getMovieLink(r.getMovieid());
-//            r.setMovieid(link.getId());
-//        }
+
         for (Rating r: userRatingList) {
             ratingRecommendList.add(new RatingRecommend(r));
         }
@@ -145,9 +143,10 @@ public class MovieServiceImpl implements MovieService {
         Gson gson = new Gson();
         String json = gson.toJson(ratingRecommendList).replace("\"", "'");
         List<Integer> movieIdList = RunPy.getRecommendIdByPy(json);
+
         List<Movie> movieList = new ArrayList<>();
         for (Integer id: movieIdList) {
-            movieList.add(movieDao.getMovieById(movieDao.getTmdbidById(id)));
+            movieList.add(movieDao.getMovieByUnusedId(id));
         }
 
         return movieList;

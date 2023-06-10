@@ -54,17 +54,16 @@ public class UserServiceImpl implements UserService {
 
     public void rateMovie(Rating rating) {
         Link link = movieDao.getMovieLink(rating.getMovieid());
-        rating.setMovieid(link.getId());
+        rating.setMovieid(link.getId()); // 设置为没有用到的id
         userDao.rateMovie(rating);
     }
 
     public List<RatingRecord> getRatingRecord(int uid) {
-        List<Rating> ratingList = userDao.getRatings(uid); // uid, movieid, rating
+        List<Rating> ratingList = userDao.getRatings(uid); // uid, id, rating
         List<RatingRecord> recordList = new ArrayList<>();
         // convert id
         for (Rating r: ratingList) {
-            int tmdbid = movieDao.getTmdbidById(r.getMovieid());
-            Movie movie = movieDao.getMovieById(tmdbid);
+            Movie movie = movieDao.getMovieByUnusedId(r.getMovieid());
             recordList.add(new RatingRecord(movie.getOriginalTitle(), r.getRating()));
         }
         return recordList;
