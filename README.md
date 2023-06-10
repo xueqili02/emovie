@@ -1,5 +1,11 @@
-# Movie Recommendation System - Group Four
+# eMovie - Movie Recommendation System @Group Four
 
-backend - Spring Boot + MySQL + MyBatis
+backend - Spring Boot + MySQL + MyBatis + Lucene + Python
 
-frontend - Vue
+frontend - Vue + Element Plus
+
+backend structure
+- controller
+- service
+- dao
+- MySQL

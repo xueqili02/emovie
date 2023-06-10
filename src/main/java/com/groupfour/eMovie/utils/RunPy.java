@@ -8,7 +8,7 @@ import java.util.List;
 public class RunPy {
 
     public static List<Integer> getRecommendIdByPy (String params) {
-//    public static void main (String[] args) {
+
         List<Integer> movieIdList = new ArrayList<>();
         try {
             // 构建Python命令
@@ -34,8 +34,6 @@ public class RunPy {
                     break;
                 }
                 movieIdList.add(Integer.valueOf(line.split(" ")[0]));
-//                System.out.println(Integer.valueOf(line.split(" ")[0]));
-//                System.out.println(line);
             }
 
             // 等待脚本执行完成

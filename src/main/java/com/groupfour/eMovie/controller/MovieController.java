@@ -10,8 +10,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import net.sf.jsqlparser.statement.create.table.Index;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +53,6 @@ public class MovieController {
         try {
             Indexer indexer = new Indexer();
             movieList = indexer.indexSearch(originalTitle, "src/main/java/com/groupfour/eMovie/utils/lucene/data", 2);
-//            movieList = movieService.setMovieGenreAndKeyword(movieList);
         } catch (Exception e) {
             e.printStackTrace();
         }

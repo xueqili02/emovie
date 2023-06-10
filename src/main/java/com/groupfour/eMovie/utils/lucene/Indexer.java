@@ -6,9 +6,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.*;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -55,13 +52,6 @@ public class Indexer {
             Directory directory = FSDirectory.open(Paths.get(indexPath));
             IndexReader reader = DirectoryReader.open(directory);
             IndexSearcher searcher = new IndexSearcher(reader);
-
-
-            // 使用MultiFieldQueryParser进行多字段搜索
-            // String[] searchFields = {"originalTitle"}; // 可以添加其他字段进行搜索
-//            QueryParser queryParser = new MultiFieldQueryParser(searchFields, new StandardAnalyzer());
-//            QueryParser queryParser = new QueryParser("originalTitle", new StandardAnalyzer());
-//            Query query = queryParser.parse(keyword);
 
             Term term = new Term("originalTitle", keyword);
             Query query = new FuzzyQuery(term, maxEdits);

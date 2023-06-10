@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
     public User registerUser(String username, String password) {
         User user = new User();
         user.setUsername(username);
-//        user.setPassword(DigestUtils.md5DigestAsHex((password + KEY).getBytes()));
         user.setPassword(password);
         userDao.registerUser(user);
         int id = user.getId();
