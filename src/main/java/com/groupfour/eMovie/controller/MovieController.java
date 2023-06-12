@@ -40,10 +40,10 @@ public class MovieController {
         return new Result(code.value(), message, movieList);
     }
 
-    @GetMapping("/originaltitle/{originalTitle}")
-    @Operation(summary = "通过originalTitle获取电影信息")
+    @GetMapping("/fuzzy/{originalTitle}")
+    @Operation(summary = "通过originalTitle模糊搜索电影信息")
     @Parameter(description = "电影的originalTitle")
-    public Result getMovieByOriginalTitle(@PathVariable String originalTitle) {
+    public Result getMovieByFuzzyQuery(@PathVariable String originalTitle) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
 
@@ -69,17 +69,30 @@ public class MovieController {
         return new Result(code.value(), message, movieList);
     }
 
-    @GetMapping("/hotmovie")
-    @Operation(summary = "获取热门电影")
-    public Result getHotMovie() {
+    @GetMapping("/originaltitle/{originalTitle}")
+    @Operation(summary = "通过originalTitle精确搜索电影信息")
+    @Parameter(description = "电影的originalTitle")
+    public Result getMovieByOriginalTitle(@PathVariable String originalTitle) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
 
-        List<Movie> movieList = movieService.getHotMovie();
+        List<Movie> movieList = movieService.getMovieByOriginalTitle(originalTitle);
         message = "success";
 
         return new Result(code.value(), message, movieList);
     }
+
+//    @GetMapping("/hotmovie")
+//    @Operation(summary = "获取热门电影")
+//    public Result getHotMovie() {
+//        HttpStatus code = HttpStatus.OK;
+//        String message = "";
+//
+//        List<Movie> movieList = movieService.getHotMovie();
+//        message = "success";
+//
+//        return new Result(code.value(), message, movieList);
+//    }
 
     @GetMapping("/id/{id}")
     @Operation(summary = "通过电影id获取电影信息")
@@ -150,18 +163,18 @@ public class MovieController {
         return new Result(code.value(), message, movieList);
     }
 
-    @GetMapping("/recommend/movieid/{id}")
-    @Operation(summary = "通过电影id，获取对应的推荐电影，hybrid+overview")
-    @Parameter(description = "movie id")
-    public Result getMovieRecommendById(@PathVariable int id) {
-        HttpStatus code = HttpStatus.OK;
-        String message = "";
-
-        List<Movie> movieList = movieService.getMovieRecommendById(id);
-        message = "success";
-
-        return new Result(code.value(), message, movieList);
-    }
+//    @GetMapping("/recommend/movieid/{id}")
+//    @Operation(summary = "通过电影id，获取对应的推荐电影，hybrid+overview")
+//    @Parameter(description = "movie id")
+//    public Result getMovieRecommendById(@PathVariable int id) {
+//        HttpStatus code = HttpStatus.OK;
+//        String message = "";
+//
+//        List<Movie> movieList = movieService.getMovieRecommendById(id);
+//        message = "success";
+//
+//        return new Result(code.value(), message, movieList);
+//    }
 
     @GetMapping("/link/{id}")
     @Operation(summary = "通过电影id，获取对应的链接")
@@ -176,16 +189,16 @@ public class MovieController {
         return new Result(code.value(), message, link);
     }
 
-    @GetMapping("/recommend/uid/{uid}")
-    @Operation(summary = "根据用户评分推荐电影")
-    @Parameter(description = "user id")
-    public Result getRecommendByRating(@PathVariable int uid) {
-        HttpStatus code = HttpStatus.OK;
-        String message = "";
-
-        List<Movie> movieList = movieService.getRecommendByRating(uid);
-        message = "success";
-
-        return new Result(code.value(), message, movieList);
-    }
+//    @GetMapping("/recommend/uid/{uid}")
+//    @Operation(summary = "根据用户评分推荐电影")
+//    @Parameter(description = "user id")
+//    public Result getRecommendByRating(@PathVariable int uid) {
+//        HttpStatus code = HttpStatus.OK;
+//        String message = "";
+//
+//        List<Movie> movieList = movieService.getRecommendByRating(uid);
+//        message = "success";
+//
+//        return new Result(code.value(), message, movieList);
+//    }
 }

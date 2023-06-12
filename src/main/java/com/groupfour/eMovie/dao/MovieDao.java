@@ -31,17 +31,17 @@ public interface MovieDao {
     @Options(keyColumn = "id", keyProperty = "id", useGeneratedKeys = true)
     Integer insertMovie(Movie movie);
 
-    @Select("SELECT * FROM movies WHERE originalTitle = 'Spider-Man 2' union all " +
-            "SELECT * FROM movies WHERE originalTitle = 'The Shawshank Redemption' union all " +
-            "SELECT * FROM movies WHERE originalTitle = 'Forrest Gump' union all " +
-            "SELECT * FROM movies WHERE originalTitle = 'Avatar'")
-    List<Movie> getHotMovie();
+//    @Select("SELECT * FROM movies WHERE originalTitle = 'Spider-Man 2' union all " +
+//            "SELECT * FROM movies WHERE originalTitle = 'The Shawshank Redemption' union all " +
+//            "SELECT * FROM movies WHERE originalTitle = 'Forrest Gump' union all " +
+//            "SELECT * FROM movies WHERE originalTitle = 'Avatar'")
+//    List<Movie> getHotMovie();
 
-    @Select("SELECT * FROM recommend_overview WHERE movieid = #{id}")
-    List<RecommendOverview> getMovieRecommendOverviewById(@Param("id") int id);
+//    @Select("SELECT * FROM recommend_overview WHERE movieid = #{id}")
+//    List<RecommendOverview> getMovieRecommendOverviewById(@Param("id") int id);
 
-    @Select("SELECT * FROM recommend_hybrid WHERE movieid = #{id}")
-    List<RecommendHybrid> getMovieRecommendHybridById(@Param("id") int id);
+//    @Select("SELECT * FROM recommend_hybrid WHERE movieid = #{id}")
+//    List<RecommendHybrid> getMovieRecommendHybridById(@Param("id") int id);
 
     @Select("SELECT * FROM links WHERE tmdbid = #{id}")
     Link getMovieLink(@Param("id")int id);

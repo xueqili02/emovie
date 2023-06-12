@@ -14,7 +14,7 @@ public class MovieGenreServiceImpl implements MovieGenreService {
     @Autowired
     private MovieGenreDao movieGenreDao;
 
-    public List<MovieGenre> getMovieGenreByMovieId(int movieid) {
-        return movieGenreDao.getMovieGenreByMovieId(movieid);
-    }
+//    public List<MovieGenre> getMovieGenreByMovieId(int movieid) {
+//        return movieGenreDao.getMovieGenreByMovieId(movieid);
+//    }
 }

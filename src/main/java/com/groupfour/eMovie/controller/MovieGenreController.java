@@ -23,16 +23,16 @@ public class MovieGenreController {
     @Autowired
     private MovieGenreService movieGenreService;
 
-    @GetMapping("/{movieid}")
-    @Operation(summary = "通过movieid获取电影类别")
-    @Parameter(description = "movie id")
-    public Result getMovieGenreByMovieId(@PathVariable int movieid) {
-        HttpStatus code = HttpStatus.OK;
-        String message = "";
-
-        List<MovieGenre> movieGenreList = movieGenreService.getMovieGenreByMovieId(movieid);
-        message = "success";
-
-        return new Result(code.value(), message, movieGenreList);
-    }
+//    @GetMapping("/{movieid}")
+//    @Operation(summary = "通过movieid获取电影类别")
+//    @Parameter(description = "movie id")
+//    public Result getMovieGenreByMovieId(@PathVariable int movieid) {
+//        HttpStatus code = HttpStatus.OK;
+//        String message = "";
+//
+//        List<MovieGenre> movieGenreList = movieGenreService.getMovieGenreByMovieId(movieid);
+//        message = "success";
+//
+//        return new Result(code.value(), message, movieGenreList);
+//    }
 }

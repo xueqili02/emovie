@@ -5,5 +5,5 @@ import com.groupfour.eMovie.entity.MovieGenre;
 import java.util.List;
 
 public interface MovieGenreService {
-    List<MovieGenre> getMovieGenreByMovieId(int movieid);
+//    List<MovieGenre> getMovieGenreByMovieId(int movieid);
 }
