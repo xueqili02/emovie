@@ -26,6 +26,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("/{username}")
     @Operation(summary = "通过username获取用户")
     @Parameter(description = "用户名")

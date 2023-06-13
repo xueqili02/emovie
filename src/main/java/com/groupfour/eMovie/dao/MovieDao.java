@@ -2,8 +2,8 @@ package com.groupfour.eMovie.dao;
 
 import com.groupfour.eMovie.entity.Link;
 import com.groupfour.eMovie.entity.Movie;
-import com.groupfour.eMovie.entity.RecommendHybrid;
-import com.groupfour.eMovie.entity.RecommendOverview;
+//import com.groupfour.eMovie.entity.RecommendHybrid;
+//import com.groupfour.eMovie.entity.RecommendOverview;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

@@ -8,6 +8,19 @@ public class User {
     private String refreshToken;
     private long loginTime;
 
+    public User() {
+
+    }
+
+    public User(int id, String username, String password, String accessToken, String refreshToken, long loginTime) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.loginTime = loginTime;
+    }
+
     public long getLoginTime() {
         return loginTime;
     }

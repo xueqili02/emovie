@@ -4,6 +4,11 @@ public class MovieGenre {
     private int movieid;
     private int genreid;
 
+    public MovieGenre(int movieid, int genreid) {
+        this.movieid = movieid;
+        this.genreid = genreid;
+    }
+
     public int getMovieid() {
         return movieid;
     }
