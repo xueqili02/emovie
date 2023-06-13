@@ -12,4 +12,12 @@ public class UserTest {
         assertEquals(1, new User(1, "lixueqi", "sdfwef", "1sfwe",
                 "sdfwe", 1686392490523L).getId());
     }
+
+    @Test
+    void setId() {
+        User user = new User(1, "lixueqi", "sdfwef", "1sfwe",
+                "sdfwe", 1686392490523L);
+        user.setId(2);
+        assertEquals(2, user.getId());
+    }
 }
