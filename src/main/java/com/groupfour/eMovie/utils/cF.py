@@ -41,7 +41,7 @@ if __name__ == '__main__':
         Sxx = sum([i ** 2 for i in tempRatingList]) - pow(sum(tempRatingList), 2) / float(n)
         Syy = sum([i ** 2 for i in tempGroupList]) - pow(sum(tempGroupList), 2) / float(n)
         Sxy = sum(i * j for i, j in zip(tempRatingList, tempGroupList)) - sum(tempRatingList) * sum(tempGroupList) / float(n)
-        a = name[0]
+        a = name
 
         if Sxx != 0 and Syy != 0:
             pearsonCorDict[a] = Sxy/sqrt(Sxx*Syy)
