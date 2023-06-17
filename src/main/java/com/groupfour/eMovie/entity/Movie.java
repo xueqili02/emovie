@@ -37,6 +37,23 @@ public class Movie {
         overview = movie.getOverview();
     }
 
+    public Movie(int id, int budget, String originalLanguage, String originalTitle, float popularity, String releaseDate, long revenue, int runtime, String title, float voteAverage, int voteCount, String overview, List<String> genre, List<String> keyword) {
+        this.id = id;
+        this.budget = budget;
+        this.originalLanguage = originalLanguage;
+        this.originalTitle = originalTitle;
+        this.popularity = popularity;
+        this.releaseDate = releaseDate;
+        this.revenue = revenue;
+        this.runtime = runtime;
+        this.title = title;
+        this.voteAverage = voteAverage;
+        this.voteCount = voteCount;
+        this.overview = overview;
+        this.genre = genre;
+        this.keyword = keyword;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(this.id, this.budget, this.originalLanguage,
