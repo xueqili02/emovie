@@ -1,6 +1,7 @@
 package com.groupfour.eMovie.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Movie {
     private int id;
@@ -34,6 +35,41 @@ public class Movie {
         voteAverage = movie.getVoteAverage();
         voteCount = movie.getVoteCount();
         overview = movie.getOverview();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.budget, this.originalLanguage,
+                this.originalTitle, this.popularity, this.releaseDate, this.revenue,
+                this.runtime, this.title, this.voteAverage, this.voteCount, this.overview,
+                this.genre, this.keyword);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        Movie movie = (Movie) obj;
+        return movie.getId() == this.id &&
+                movie.getBudget() == this.budget &&
+                Objects.equals(movie.getOriginalLanguage(), this.originalLanguage) &&
+                Objects.equals(movie.getOriginalTitle(), this.originalTitle) &&
+                movie.getPopularity() == this.popularity &&
+                Objects.equals(movie.getReleaseDate(), this.releaseDate) &&
+                movie.getRevenue() == this.revenue &&
+                movie.getRuntime() == this.runtime &&
+                Objects.equals(movie.getTitle(), this.title) &&
+                movie.getVoteAverage() == this.voteAverage &&
+                movie.getVoteCount() == this.voteCount &&
+                Objects.equals(movie.getOverview(), this.overview) &&
+                Objects.equals(movie.getGenre(), this.genre) &&
+                Objects.equals(movie.getKeyword(), this.keyword);
     }
 
     public int getId() {

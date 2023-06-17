@@ -3,6 +3,7 @@ package com.groupfour.eMovie.entity;
 import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Order {
     private int userid;
@@ -19,6 +20,30 @@ public class Order {
         this.displayTime = displayTime;
         this.price = price;
         this.seat = seat;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.userid, this.movieid, this.createTime,
+                            this.displayTime, this.price, this.seat);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        Order order = (Order) obj;
+        return order.getUserid() == this.userid
+                && order.getMovieid() == this.movieid
+                && Objects.equals(order.getCreateTime(), this.createTime)
+                && Objects.equals(order.getDisplayTime(), this.displayTime)
+                && order.getPrice() == this.price
+                && Objects.equals(order.getSeat(), this.seat);
     }
 
     public int getUserid() {

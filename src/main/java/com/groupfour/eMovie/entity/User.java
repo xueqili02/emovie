@@ -1,5 +1,7 @@
 package com.groupfour.eMovie.entity;
 
+import java.util.Objects;
+
 public class User {
     private int id;
     private String username;
@@ -72,5 +74,31 @@ public class User {
     @Override
     public String toString() {
         return "user " + id + "\n" + username + "\n" + password + "\n" + accessToken + "\n" + refreshToken;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id, this.username,
+                this.password, this.accessToken,
+                this.refreshToken, this.refreshToken);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj == null) {
+            return false;
+        }
+
+        User user = (User) obj;
+        return user.getId() == this.id
+                && Objects.equals(user.getUsername(), this.username)
+                && Objects.equals(user.getPassword(), this.password)
+                && Objects.equals(user.getAccessToken(), this.accessToken)
+                && Objects.equals(user.getRefreshToken(), this.refreshToken)
+                && user.getLoginTime() == this.loginTime;
     }
 }
