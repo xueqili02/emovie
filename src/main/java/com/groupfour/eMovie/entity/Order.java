@@ -22,6 +22,9 @@ public class Order {
         this.seat = seat;
     }
 
+    public Order(int userid, int movieid, String s, String s1) {
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(this.userid, this.movieid, this.createTime,
