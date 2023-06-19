@@ -7,6 +7,10 @@ public class Rating {
     private int movieid;
     private float rating;
 
+    public Rating() {
+
+    }
+
     public Rating(int uid, int movieid, float rating) {
         this.uid = uid;
         this.movieid = movieid;

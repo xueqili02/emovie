@@ -21,7 +21,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @PostMapping("/insert")
+    @PostMapping("")
     @Operation(summary = "插入订单")
     public Result insertOrder(@Schema(example = "{\"uid\": \"1\"}")
             @RequestBody Order order) {
@@ -38,7 +38,7 @@ public class OrderController {
 
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     @Operation(summary = "获取所有订单信息")
     public Result getOrders() {
         HttpStatus code = HttpStatus.OK;

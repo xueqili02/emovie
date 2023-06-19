@@ -13,6 +13,10 @@ public class Order {
     private float price;
     private String seat;
 
+    public Order() {
+
+    }
+
     public Order(int userid, int movieid, Timestamp createTime, Timestamp displayTime, float price, String seat) {
         this.userid = userid;
         this.movieid = movieid;
@@ -20,9 +24,6 @@ public class Order {
         this.displayTime = displayTime;
         this.price = price;
         this.seat = seat;
-    }
-
-    public Order(int userid, int movieid, String s, String s1) {
     }
 
     @Override
