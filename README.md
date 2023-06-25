@@ -1,8 +1,6 @@
 # eMovie - Movie Recommendation System @Group Four
 
-backend - Spring Boot + MySQL + MyBatis + Lucene + Python
-
-frontend - Vue + Element Plus
+backend - Spring Boot + MySQL + MyBatis + Lucene
 
 backend structure
 - controller

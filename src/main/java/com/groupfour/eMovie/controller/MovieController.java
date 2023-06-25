@@ -82,18 +82,6 @@ public class MovieController {
         return new Result(code.value(), message, movieList);
     }
 
-//    @GetMapping("/hotmovie")
-//    @Operation(summary = "获取热门电影")
-//    public Result getHotMovie() {
-//        HttpStatus code = HttpStatus.OK;
-//        String message = "";
-//
-//        List<Movie> movieList = movieService.getHotMovie();
-//        message = "success";
-//
-//        return new Result(code.value(), message, movieList);
-//    }
-
     @GetMapping("/id/{id}")
     @Operation(summary = "通过电影id获取电影信息")
     @Parameter(description = "电影id")
@@ -163,19 +151,6 @@ public class MovieController {
         return new Result(code.value(), message, movieList);
     }
 
-//    @GetMapping("/recommend/movieid/{id}")
-//    @Operation(summary = "通过电影id，获取对应的推荐电影，hybrid+overview")
-//    @Parameter(description = "movie id")
-//    public Result getMovieRecommendById(@PathVariable int id) {
-//        HttpStatus code = HttpStatus.OK;
-//        String message = "";
-//
-//        List<Movie> movieList = movieService.getMovieRecommendById(id);
-//        message = "success";
-//
-//        return new Result(code.value(), message, movieList);
-//    }
-
     @GetMapping("/link/{id}")
     @Operation(summary = "通过电影id，获取对应的链接")
     @Parameter(description = "电影id")
@@ -189,16 +164,4 @@ public class MovieController {
         return new Result(code.value(), message, link);
     }
 
-//    @GetMapping("/recommend/uid/{uid}")
-//    @Operation(summary = "根据用户评分推荐电影")
-//    @Parameter(description = "user id")
-//    public Result getRecommendByRating(@PathVariable int uid) {
-//        HttpStatus code = HttpStatus.OK;
-//        String message = "";
-//
-//        List<Movie> movieList = movieService.getRecommendByRating(uid);
-//        message = "success";
-//
-//        return new Result(code.value(), message, movieList);
-//    }
 }

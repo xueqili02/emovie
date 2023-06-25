@@ -1,16 +1,12 @@
 package com.groupfour.eMovie.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.google.gson.Gson;
 import com.groupfour.eMovie.dao.*;
 import com.groupfour.eMovie.entity.*;
 import com.groupfour.eMovie.service.MovieService;
-import com.groupfour.eMovie.utils.RunPy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,23 +38,9 @@ public class MovieServiceImpl implements MovieService {
         return movieDao.getMovies();
     }
 
-//    public List<Movie> getMovieByFuzzyQuery(String originalTitle) {
-////        try {
-////            Indexer indexer = new Indexer();
-////            indexer.indexAdd(movieDao, "src/main/java/com/groupfour/eMovie/utils/lucene/data");
-////        } catch (Exception e) {
-////            e.printStackTrace();
-////        }
-//        return movieDao.getMovieByOriginalTitle("%" + originalTitle + "%");
-//    }
-
     public List<Movie> getMovieByOriginalTitle(String originalTitle) {
         return movieDao.getMovieByOriginalTitle("%" + originalTitle + "%");
     }
-
-//    public List<Movie> getHotMovie() {
-//        return movieDao.getHotMovie();
-//    }
 
     public Movie getMovieById(int id) {
         return setMovieGenreAndKeyword(movieDao.getMovieById(id));
@@ -109,50 +91,8 @@ public class MovieServiceImpl implements MovieService {
         return movie;
     }
 
-//    public List<Movie> getMovieRecommendById(int id) {
-//        List<RecommendOverview> movieOverviewList = movieDao.getMovieRecommendOverviewById(id);
-//        List<RecommendHybrid> movieHybridList = movieDao.getMovieRecommendHybridById(id);
-//        List<Movie> movieList = new ArrayList<>();
-//
-//        if (movieHybridList.size() != 0) {
-//            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie1()));
-//            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie2()));
-//            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie3()));
-//            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie4()));
-//        }
-//
-//        if (movieOverviewList.size() != 0) {
-//            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie9()));
-//            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie8()));
-//            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie7()));
-//            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie6()));
-//        }
-//
-//        return movieList;
-//    }
-
     public Link getMovieLink(int id){
         Link link = movieDao.getMovieLink(id);
         return link;
     }
-
-//    public List<Movie> getRecommendByRating(int uid) {
-//        List<Rating> userRatingList = ratingDao.getLinkByUid(uid);
-//        List<RatingRecommend> ratingRecommendList = new ArrayList<>();
-//
-//        for (Rating r: userRatingList) {
-//            ratingRecommendList.add(new RatingRecommend(r));
-//        }
-//
-//        Gson gson = new Gson();
-//        String json = gson.toJson(ratingRecommendList).replace("\"", "'");
-//        List<Integer> movieIdList = RunPy.getRecommendIdByPy(json);
-//
-//        List<Movie> movieList = new ArrayList<>();
-//        for (Integer id: movieIdList) {
-//            movieList.add(movieDao.getMovieByUnusedId(id));
-//        }
-//
-//        return movieList;
-//    }
 }

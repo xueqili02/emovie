@@ -29,5 +29,4 @@ public class OrderServiceImpl implements OrderService {
         return orderDao.getOrdersByUserId(uid);
     }
 
-    // 函数定义
 }
