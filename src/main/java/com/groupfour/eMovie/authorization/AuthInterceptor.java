@@ -16,6 +16,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 
+/*
+ * 实现拦截器，Access Token和Refresh Token的验证
+ *
+ * */
+
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
