@@ -5,6 +5,16 @@ public class UserChangePassword {
     private String oldPassword;
     private String newPassword;
 
+    public UserChangePassword() {
+
+    }
+
+    public UserChangePassword(String username, String oldPassword, String newPassword) {
+        this.username = username;
+        this.oldPassword = oldPassword;
+        this.newPassword = newPassword;
+    }
+
     public String getUsername() {
         return username;
     }

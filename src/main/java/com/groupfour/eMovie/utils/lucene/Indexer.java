@@ -15,6 +15,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * 生成Lucene索引
+ *
+ * */
 public class Indexer {
 
     public void indexAdd(MovieDao movieDao, String indexPath) throws IOException {

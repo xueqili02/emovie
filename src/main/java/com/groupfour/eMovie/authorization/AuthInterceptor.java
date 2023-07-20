@@ -16,6 +16,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.lang.reflect.Method;
 import java.util.Calendar;
 
+/*
+ * 实现拦截器，Access Token和Refresh Token的验证
+ *
+ * */
+
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
@@ -51,7 +56,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             // client cypher equals server cypher
             if (clientRefreshCypher != null && serverRefreshCypher.trim().equals(clientRefreshCypher.trim())) {
                 // refresh token does not expire
-                if ((Calendar.getInstance().getTimeInMillis() - Long.parseLong(loginTime)) / 1000 <= 604800) { // 7 days
+                if ((Calendar.getInstance().getTimeInMillis() - Long.parseLong(loginTime)) / 1000 <= 150) { // 7 days
 
                     User user = userDao.getUserByRefreshToken(refreshToken); // find current user
 
@@ -86,7 +91,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             serverAccessCypher = DigestUtils.md5DigestAsHex((accessToken + ACCESS_KEY + loginTime).getBytes());
         }
         if (clientAccessCypher != null && serverAccessCypher.trim().equals(clientAccessCypher.trim())) {
-            if ((Calendar.getInstance().getTimeInMillis() - Long.parseLong(loginTime)) / 1000 <= 900) { // 15 min
+            if ((Calendar.getInstance().getTimeInMillis() - Long.parseLong(loginTime)) / 1000 <= 80) { // 15 min
                 return true;
             }
         }

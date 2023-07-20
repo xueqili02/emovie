@@ -5,6 +5,12 @@ public class Link {
     private int imdbid;
     private int tmdbid;
 
+    public Link(int id, int imdbid, int tmdbid) {
+        this.id = id;
+        this.imdbid = imdbid;
+        this.tmdbid = tmdbid;
+    }
+
     public int getId() {
         return id;
     }

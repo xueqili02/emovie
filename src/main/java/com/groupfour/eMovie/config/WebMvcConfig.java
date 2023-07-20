@@ -6,6 +6,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/*
+* 配置拦截器拦截的API
+*
+* */
+
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
@@ -15,6 +20,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor).addPathPatterns("/users/**")
-                                                .excludePathPatterns("/users/login", "/users");
+                                                .excludePathPatterns("/users/login", "/users",
+                                                        "/users/password/**",
+                                                        "/users/rating",
+                                                        "/users/ratingrecord/**");
     }
 }
