@@ -9,18 +9,20 @@ public class User {
     private String accessToken;
     private String refreshToken;
     private long loginTime;
+    private String email;
 
     public User() {
 
     }
 
-    public User(int id, String username, String password, String accessToken, String refreshToken, long loginTime) {
+    public User(int id, String username, String password, String accessToken, String refreshToken, long loginTime, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.loginTime = loginTime;
+        this.email = email;
     }
 
     public long getLoginTime() {
@@ -69,6 +71,14 @@ public class User {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

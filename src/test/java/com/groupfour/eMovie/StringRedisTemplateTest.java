@@ -22,7 +22,7 @@ public class StringRedisTemplateTest {
 
     @Test
     void testSaveUser() {
-        User user = new User(100, "lotov", "sadfwef", null, null, 1234L);
+        User user = new User(100, "lotov", "sadfwef", null, null, 1234L, "abc@gmail.com");
         stringRedisTemplate.opsForValue().set("user:5", new Gson().toJson(user));
         String jsonUser = stringRedisTemplate.opsForValue().get("user:5");
         User obtainedUser = new Gson().fromJson(jsonUser, User.class);

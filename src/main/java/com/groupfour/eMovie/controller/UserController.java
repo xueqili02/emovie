@@ -1,9 +1,6 @@
 package com.groupfour.eMovie.controller;
 
-import com.groupfour.eMovie.entity.Rating;
-import com.groupfour.eMovie.entity.RatingRecord;
-import com.groupfour.eMovie.entity.User;
-import com.groupfour.eMovie.entity.UserChangePassword;
+import com.groupfour.eMovie.entity.*;
 import com.groupfour.eMovie.service.UserService;
 import com.groupfour.eMovie.utils.Result;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Calendar;
 import java.util.List;
+
+import static com.groupfour.eMovie.utils.ProjectConstants.FAILURE;
 
 @RestController
 @RequestMapping("/users")
@@ -90,6 +89,39 @@ public class UserController {
         }
     }
 
+    @PostMapping("/login/email")
+    public Result loginByEmail(@RequestBody LoginCode loginCode) {
+        HttpStatus code = null;
+        String message = "";
+        User getUser = userService.loginByCode(loginCode);
+
+        if (getUser == null) {
+            code = HttpStatus.BAD_REQUEST;
+            message = "failure";
+            return new Result(code.value(), message, null);
+        }
+
+        code = HttpStatus.OK;
+        message = "success";
+        return new Result(code.value(), message, getUser);
+    }
+
+    @PostMapping("/code")
+    public Result sendCode(@RequestBody LoginEmail loginEmail) {
+        HttpStatus code = null;
+        String message = "";
+
+        if (userService.sendCodeByEmail(loginEmail) == FAILURE) {
+            code = HttpStatus.BAD_REQUEST;
+            message = "Fail to send code";
+            return new Result(code.value(), message, null);
+        }
+
+        code = HttpStatus.OK;
+        message = "success";
+        return new Result(code.value(), message, null);
+    }
+
     @PostMapping("")
     @Operation(summary = "用户注册")
     public Result registerUser(@Schema(example = "{\"username\": \"lixueqi\", \"password\": \"123\"}")
@@ -102,19 +134,23 @@ public class UserController {
             if (user.getUsername() == null || user.getUsername().equals("")) {
                 code = HttpStatus.BAD_REQUEST;
                 message = "Username is null.";
-                throw new Exception("Username is null.");
+                throw new Exception(message);
             } else if (user.getPassword() == null || user.getPassword().equals("")) {
                 code = HttpStatus.BAD_REQUEST;
                 message = "Password is null.";
-                throw new Exception("Password is null.");
+                throw new Exception(message);
+            } else if (user.getEmail() == null || user.getEmail().equals("")) {
+                code = HttpStatus.BAD_REQUEST;
+                message = "Email is null.";
+                throw new Exception(message);
             }
 
-            if (userService.existUser(user.getUsername())) {
+            if (userService.existUser(user)) {
                 code = HttpStatus.BAD_REQUEST;
                 message = "User already exists.";
                 throw new Exception("User already exists.");
             } else {
-                newUser = userService.registerUser(user.getUsername(), user.getPassword());
+                newUser = userService.registerUser(user);
                 code = HttpStatus.CREATED;
                 message = "Register Success";
             }

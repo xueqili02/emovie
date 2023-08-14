@@ -39,4 +39,7 @@ public interface UserDao {
 
     @Select("SELECT * FROM movie_ratings WHERE uid = #{uid}")
     List<Rating> getRatings(@Param("uid") int uid);
+
+    @Select("SELECT * FROM users WHERE email = #{email}")
+    User getUserByEmail(@Param("email") String email);
 }
