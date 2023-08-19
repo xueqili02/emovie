@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
         String content = "eMovie validation code is: " + code + ". It is valid within 5 minutes.";
         new MailUtils().send(email, subject, content);
 
-        stringRedisTemplate.opsForValue().set(REDIS_LOGIN_KEY_PREFIX + email, code, 5, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(REDIS_LOGIN_KEY_PREFIX + email, code, REDIS_LOGIN_TTL, TimeUnit.MINUTES);
 
         return SUCCESS;
     }
