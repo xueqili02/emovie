@@ -19,6 +19,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.groupfour.eMovie.utils.ProjectConstants.SUCCESS;
+
 @RestController
 @RequestMapping("/movies")
 @Tag(name = "电影API")
@@ -164,4 +166,56 @@ public class MovieController {
         return new Result(code.value(), message, link);
     }
 
+    @GetMapping("/hotmovie")
+    @Operation(summary = "获取热门电影")
+    public Result getHotMovie() {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        List<Movie> movieList = movieService.getHotMovie();
+        message = "success";
+
+        return new Result(code.value(), message, movieList);
+    }
+
+    @GetMapping("/recommend/uid/{uid}")
+    @Operation(summary = "根据用户评分推荐电影")
+    @Parameter(description = "user id")
+    public Result getRecommendByRating(@PathVariable int uid) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        List<Movie> movieList = movieService.getRecommendByRating(uid);
+        message = "success";
+
+        return new Result(code.value(), message, movieList);
+    }
+
+    @GetMapping("/recommend/movieid/{id}")
+    @Operation(summary = "通过电影id，获取对应的推荐电影，hybrid+overview")
+    @Parameter(description = "movie id")
+    public Result getMovieRecommendById(@PathVariable int id) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        List<Movie> movieList = movieService.getMovieRecommendById(id);
+        message = "success";
+
+        return new Result(code.value(), message, movieList);
+    }
+
+    @PutMapping("/id/{id}")
+    public Result updateMovie(@PathVariable int id, @RequestBody Movie movie) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        int result = movieService.updateMovie(movie);
+        if (result == SUCCESS) {
+            message = "success";
+        } else {
+            message = "failure";
+        }
+
+        return new Result(code.value(), message, null);
+    }
 }

@@ -1,20 +1,23 @@
 package com.groupfour.eMovie.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.google.gson.Gson;
 import com.groupfour.eMovie.dao.*;
 import com.groupfour.eMovie.entity.*;
 import com.groupfour.eMovie.service.MovieService;
 import com.groupfour.eMovie.utils.JsonUtils;
+import com.groupfour.eMovie.utils.RunPy;
+import com.groupfour.eMovie.utils.lucene.Indexer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.groupfour.eMovie.utils.ProjectConstants.REDIS_MOVIE_KEY_PREFIX;
-import static com.groupfour.eMovie.utils.ProjectConstants.REDIS_MOVIE_TTL;
+import static com.groupfour.eMovie.utils.ProjectConstants.*;
 
 
 @Service("MovieServiceImpl")
@@ -48,7 +51,17 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public List<Movie> getMovieByOriginalTitle(String originalTitle) {
+//        try {
+//            Indexer indexer = new Indexer();
+//            indexer.indexAdd(movieDao, "src/main/java/com/groupfour/eMovie/utils/lucene/data");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return movieDao.getMovieByOriginalTitle("%" + originalTitle + "%");
+    }
+
+    public List<Movie> getHotMovie() {
+        return movieDao.getHotMovie();
     }
 
     /*
@@ -123,5 +136,61 @@ public class MovieServiceImpl implements MovieService {
     public Link getMovieLink(int id){
         Link link = movieDao.getMovieLink(id);
         return link;
+    }
+
+    public List<Movie> getMovieRecommendById(int id) {
+        List<RecommendOverview> movieOverviewList = movieDao.getMovieRecommendOverviewById(id);
+        List<RecommendHybrid> movieHybridList = movieDao.getMovieRecommendHybridById(id);
+        List<Movie> movieList = new ArrayList<>();
+
+        if (movieHybridList.size() != 0) {
+            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie1()));
+            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie2()));
+            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie3()));
+            movieList.add(movieDao.getMovieById(movieHybridList.get(0).getMovie4()));
+        }
+
+        if (movieOverviewList.size() != 0) {
+            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie9()));
+            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie8()));
+            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie7()));
+            movieList.add(movieDao.getMovieById(movieOverviewList.get(0).getMovie6()));
+        }
+
+        return movieList;
+    }
+
+    public List<Movie> getRecommendByRating(int uid) {
+        List<Rating> userRatingList = ratingDao.getLinkByUid(uid);
+        List<RatingRecommend> ratingRecommendList = new ArrayList<>();
+
+        for (Rating r: userRatingList) {
+            ratingRecommendList.add(new RatingRecommend(r));
+        }
+
+        Gson gson = new Gson();
+        String json = gson.toJson(ratingRecommendList).replace("\"", "'");
+        List<Integer> movieIdList = RunPy.getRecommendIdByPy(json);
+
+        List<Movie> movieList = new ArrayList<>();
+        for (Integer id: movieIdList) {
+            movieList.add(movieDao.getMovieByUnusedId(id));
+        }
+
+        return movieList;
+    }
+
+    @Transactional  // 事务，同步成功或同步失败
+    public int updateMovie(Movie movie) {
+        // 更新操作
+        Integer id = movie.getId();
+        if (id == null) {
+            return FAILURE;
+        }
+        // 先更新数据库
+        movieDao.updateMovie(movie);
+        // 删除缓存
+        stringRedisTemplate.delete(REDIS_MOVIE_KEY_PREFIX + id);
+        return SUCCESS;
     }
 }

@@ -10,9 +10,7 @@ public interface MovieService {
 
     List<Movie> getMovieByOriginalTitle(String originalTitle);
 
-//    List<Movie> getMoviveByFuzzyQuery(String originalTitle);
-
-//    List<Movie> getHotMovie();
+    List<Movie> getHotMovie();
 
     Movie getMovieById(int id);
 
@@ -24,9 +22,11 @@ public interface MovieService {
 
     Movie setMovieGenreAndKeyword(Movie movie);
 
-//    List<Movie> getMovieRecommendById(int id);
+    List<Movie> getMovieRecommendById(int id);
 
     Link getMovieLink(int id);
 
-//    List<Movie> getRecommendByRating(int uid);
+    List<Movie> getRecommendByRating(int uid);
+
+    int updateMovie(Movie movie);
 }
