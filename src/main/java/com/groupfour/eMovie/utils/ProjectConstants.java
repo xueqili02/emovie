@@ -10,6 +10,7 @@ public class ProjectConstants {
     // redis TTL
     public static final Long REDIS_LOGIN_TTL = 5L;
     public static final Long REDIS_MOVIE_TTL = 30L;
+    public static final Long REDIS_NULL_TTL = 2L;
 
     // status
     public static final int SUCCESS = 1;

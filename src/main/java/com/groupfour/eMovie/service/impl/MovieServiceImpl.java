@@ -66,19 +66,26 @@ public class MovieServiceImpl implements MovieService {
 
     /*
     * optimize query time from 74ms to 5ms
+    * resolve 缓存穿透 problem
     * */
     public Movie getMovieById(int id) {
         String key = REDIS_MOVIE_KEY_PREFIX + id;
         // 从redis查询缓存
         String movieJson = stringRedisTemplate.opsForValue().get(key);
-        // 命中，直接返回
-        if (movieJson != null && !movieJson.equals("")) {
-            return JsonUtils.fromJson(movieJson, Movie.class);
+        System.out.println(movieJson);
+        // 命中，直接返回 ---> 命中，判断查到的是否为空，不是空则返回
+        if (movieJson != null) { // 查到缓存
+            if (!movieJson.equals("")) { // 缓存不是空
+                return JsonUtils.fromJson(movieJson, Movie.class);
+            } else { // 缓存是空值，返回null，防止缓存穿透
+                return null;
+            }
         }
         // 未命中，查询数据库
         Movie movie = movieDao.getMovieById(id);
-        // 数据库未查询到，返回null
+        // 数据库未查询到，返回null ----> 数据库未查询到，将空值写入redis
         if (movie == null) {
+            stringRedisTemplate.opsForValue().set(key, "", REDIS_NULL_TTL, TimeUnit.MINUTES);
             return null;
         }
         // 数据库查询到，写入redis
