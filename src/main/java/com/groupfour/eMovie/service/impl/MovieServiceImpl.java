@@ -69,10 +69,20 @@ public class MovieServiceImpl implements MovieService {
     * resolve 缓存穿透 problem
     * */
     public Movie getMovieById(int id) {
+        // cache penetration
+//        return getMovieByIdWithCachePenetration(id);
+
+        // hotspot invalid mutex
+        return getMovieByIdWithHotspotInvalidMutex(id);
+
+        // hotspot invalid logical expiration
+//        return getMovieByIdWithHotspotInvalidLogicalExpiration(id);
+    }
+
+    private Movie getMovieByIdWithCachePenetration(int id) {
         String key = REDIS_MOVIE_KEY_PREFIX + id;
         // 从redis查询缓存
         String movieJson = stringRedisTemplate.opsForValue().get(key);
-        System.out.println(movieJson);
         // 命中，直接返回 ---> 命中，判断查到的是否为空，不是空则返回
         if (movieJson != null) { // 查到缓存
             if (!movieJson.equals("")) { // 缓存不是空
@@ -93,6 +103,68 @@ public class MovieServiceImpl implements MovieService {
         // 返回数据
         return setMovieGenreAndKeyword(movie);
 //        return setMovieGenreAndKeyword(movieDao.getMovieById(id));
+    }
+
+    /*
+    * 互斥锁解决缓存击穿
+    * */
+    private Movie getMovieByIdWithHotspotInvalidMutex(int id) {
+        String key = REDIS_MOVIE_KEY_PREFIX + id;
+        // 从redis查询缓存
+        String movieJson = stringRedisTemplate.opsForValue().get(key);
+        // 命中，直接返回 ---> 命中，判断查到的是否为空，不是空则返回
+        if (movieJson != null) { // 查到缓存
+            if (!movieJson.equals("")) { // 缓存不是空
+                return JsonUtils.fromJson(movieJson, Movie.class);
+            } else { // 缓存是空值，返回null，防止缓存穿透
+                return null;
+            }
+        }
+        // 实现缓存重建
+        // 尝试获取互斥锁
+        String lockKey = REDIS_LOCK_KEY_PREFIX + id;
+        Movie movie = null;
+        try {
+            // 不成功，休眠并重试
+            if (!tryLock(lockKey)) {
+                Thread.sleep(50);
+                getMovieByIdWithHotspotInvalidMutex(id);
+            }
+            // 成功，根据id查询数据库
+            movie = movieDao.getMovieById(id);
+            // 数据库未查询到，返回null ----> 数据库未查询到，将空值写入redis
+            if (movie == null) {
+                stringRedisTemplate.opsForValue().set(key, "", REDIS_NULL_TTL, TimeUnit.MINUTES);
+                return null;
+            }
+            // 数据库查询到，写入redis
+            stringRedisTemplate.opsForValue().set(key, JsonUtils.toJson(movie), REDIS_MOVIE_TTL, TimeUnit.MINUTES);
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            // 释放互斥锁
+            unlock(lockKey);
+        }
+        // 返回数据
+        return setMovieGenreAndKeyword(movie);
+    }
+
+    private boolean tryLock(String key) {
+        Boolean flag = stringRedisTemplate.opsForValue().setIfAbsent(key, "1", REDIS_LOCK_TTL, TimeUnit.SECONDS);
+        if (flag == null) {
+            return false;
+        }
+        return flag;
+    }
+
+    private void unlock(String key) {
+        stringRedisTemplate.delete(key);
+    }
+
+    private Movie getMovieByIdWithHotspotInvalidLogicalExpiration(int id) {
+        // TODO
+        return null;
     }
 
     public Movie insertMovie(Movie movie) {
