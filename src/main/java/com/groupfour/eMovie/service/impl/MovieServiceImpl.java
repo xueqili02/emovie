@@ -13,8 +13,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static com.groupfour.eMovie.utils.ProjectConstants.*;
@@ -44,6 +47,8 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    private static final ExecutorService CACHE_REBUILD_EXECUTOR = Executors.newFixedThreadPool(10);
+
     public List<Movie> getMovies(int pageNum) {
         int pageSize = 16;
         PageHelper.startPage(pageNum, pageSize);
@@ -70,13 +75,18 @@ public class MovieServiceImpl implements MovieService {
     * */
     public Movie getMovieById(int id) {
         // cache penetration
-//        return getMovieByIdWithCachePenetration(id);
+//        Movie movie =  getMovieByIdWithCachePenetration(id);
 
         // hotspot invalid mutex
-        return getMovieByIdWithHotspotInvalidMutex(id);
+        Movie movie = getMovieByIdWithHotspotInvalidMutex(id);
 
         // hotspot invalid logical expiration
-//        return getMovieByIdWithHotspotInvalidLogicalExpiration(id);
+//        Movie movie =  getMovieByIdWithHotspotInvalidLogicalExpiration(id);
+
+        if (movie == null) {
+            return null;
+        }
+        return setMovieGenreAndKeyword(movie);
     }
 
     private Movie getMovieByIdWithCachePenetration(int id) {
@@ -101,8 +111,7 @@ public class MovieServiceImpl implements MovieService {
         // 数据库查询到，写入redis
         stringRedisTemplate.opsForValue().set(key, JsonUtils.toJson(movie), REDIS_MOVIE_TTL, TimeUnit.MINUTES);
         // 返回数据
-        return setMovieGenreAndKeyword(movie);
-//        return setMovieGenreAndKeyword(movieDao.getMovieById(id));
+        return movie;
     }
 
     /*
@@ -163,8 +172,52 @@ public class MovieServiceImpl implements MovieService {
     }
 
     private Movie getMovieByIdWithHotspotInvalidLogicalExpiration(int id) {
-        // TODO
-        return null;
+        String key = REDIS_MOVIE_KEY_PREFIX + id;
+        // 从redis查询缓存
+        String movieJson = stringRedisTemplate.opsForValue().get(key);
+        // 未命中，直接返回null
+        if (movieJson == null || movieJson.equals("")) {
+            return null;
+        }
+        // 命中，把json反序列化
+        RedisData redisData = JsonUtils.fromJson(movieJson, RedisData.class);
+        Movie movie = (Movie) redisData.getObject();
+
+        // 判断是否过期
+        if (redisData.getExpireTime().isAfter(LocalDateTime.now())) {
+            // 未过期，直接返回
+            return movie;
+        }
+
+        // 已过期，缓存重建
+        // 获取互斥锁
+        String lockKey = REDIS_LOCK_KEY_PREFIX + id;
+        if (tryLock(lockKey)) {
+            try {
+                // 获取成功，开启新线程，重建缓存
+                CACHE_REBUILD_EXECUTOR.submit(() -> {
+                    // 重建缓存
+                    this.saveMovieToRedis(id);
+                });
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            } finally {
+                // 释放锁
+                unlock(lockKey);
+            }
+        }
+        // 返回旧数据
+        return movie;
+    }
+
+    private void saveMovieToRedis(int id) {
+        // 查询电影信息
+        Movie movie = movieDao.getMovieById(id);
+        // 封装逻辑过期时间
+        RedisData<Movie> redisData = new RedisData<>(LocalDateTime.now().plusMinutes(REDIS_MOVIE_TTL), movie);
+        // 写入Redis，逻辑过期，所以不设置过期时间
+        String key = REDIS_MOVIE_KEY_PREFIX + id;
+        stringRedisTemplate.opsForValue().set(key, JsonUtils.toJson(redisData));
     }
 
     public Movie insertMovie(Movie movie) {
