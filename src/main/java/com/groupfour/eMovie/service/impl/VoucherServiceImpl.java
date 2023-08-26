@@ -17,4 +17,8 @@ public class VoucherServiceImpl implements VoucherService {
         voucherDao.addFlashVoucher(flashVoucher);
         return flashVoucher;
     }
+
+    public FlashVoucher getFlashVoucherById(long id) {
+        return voucherDao.getFlashVoucherById(id);
+    }
 }

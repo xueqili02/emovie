@@ -6,10 +6,7 @@ import com.groupfour.eMovie.utils.Result;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/vouchers")
@@ -33,5 +30,21 @@ public class VoucherController {
         }
 
         return new Result(code.value(), message, newVoucher);
+    }
+
+
+    @GetMapping("/flash/id/{id}")
+    public Result getFlashVoucherById(@PathVariable long id) {
+        HttpStatus code = HttpStatus.OK;
+        String message = "";
+
+        FlashVoucher voucher = voucherService.getFlashVoucherById(id);
+        if (voucher == null) {
+            message = "failure";
+        } else {
+            message = "success";
+        }
+
+        return new Result(code.value(), message, voucher);
     }
 }

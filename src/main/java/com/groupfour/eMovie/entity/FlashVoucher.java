@@ -1,14 +1,14 @@
 package com.groupfour.eMovie.entity;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class FlashVoucher {
     private long id;
     private int stock;
-    private Timestamp create_time;
-    private Timestamp begin_time;
-    private Timestamp end_time;
-    private Timestamp update_time;
+    private LocalDateTime create_time;
+    private LocalDateTime begin_time;
+    private LocalDateTime end_time;
+    private LocalDateTime update_time;
 
     public long getId() {
         return id;
@@ -26,35 +26,35 @@ public class FlashVoucher {
         this.stock = stock;
     }
 
-    public Timestamp getCreate_time() {
+    public LocalDateTime getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(Timestamp create_time) {
+    public void setCreate_time(LocalDateTime create_time) {
         this.create_time = create_time;
     }
 
-    public Timestamp getBegin_time() {
+    public LocalDateTime getBegin_time() {
         return begin_time;
     }
 
-    public void setBegin_time(Timestamp begin_time) {
+    public void setBegin_time(LocalDateTime begin_time) {
         this.begin_time = begin_time;
     }
 
-    public Timestamp getEnd_time() {
+    public LocalDateTime getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(Timestamp end_time) {
+    public void setEnd_time(LocalDateTime end_time) {
         this.end_time = end_time;
     }
 
-    public Timestamp getUpdate_time() {
+    public LocalDateTime getUpdate_time() {
         return update_time;
     }
 
-    public void setUpdate_time(Timestamp update_time) {
+    public void setUpdate_time(LocalDateTime update_time) {
         this.update_time = update_time;
     }
 }

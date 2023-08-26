@@ -6,4 +6,5 @@ public interface VoucherService {
 
     FlashVoucher addFlashVoucher(FlashVoucher flashVoucher);
 
+    FlashVoucher getFlashVoucherById(long id);
 }

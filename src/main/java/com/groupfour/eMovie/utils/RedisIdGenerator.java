@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+import static com.groupfour.eMovie.utils.ProjectConstants.REDIS_INCR_KEY_PREFIX;
+
 @Component
 public class RedisIdGenerator {
 
@@ -34,7 +36,7 @@ public class RedisIdGenerator {
         // 2.1 获取当前日期，精确到天；这样生成序列号，避免订单数超过2^32上限，因为每天不可能有这么多订单，同时方便统计数据
         String date = now.format(DateTimeFormatter.ofPattern("yyyy:MM:dd"));
         // 2.2 自增长，此处不会是null pointer，因为如果redis发现key为null，会自动创建一条记录并自增
-        long count = stringRedisTemplate.opsForValue().increment("icr:" + keyPrefix + ":" + date);
+        long count = stringRedisTemplate.opsForValue().increment(REDIS_INCR_KEY_PREFIX + keyPrefix + ":" + date);
         // 3 拼接并返回
         return timestamp << COUNT_BITS | count;
     }

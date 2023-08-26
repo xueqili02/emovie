@@ -13,12 +13,12 @@ public class VoucherOrderController {
     @Autowired
     private VoucherOrderService voucherOrderService;
 
-    @PostMapping("/flash/id/{id}")
-    public Result flashVoucherOrder(@PathVariable Long id) {
+    @PostMapping("/flash/id/{id}/uid/{uid}")
+    public Result flashVoucherOrder(@PathVariable long id, @PathVariable int uid) {
         HttpStatus code = HttpStatus.OK;
         String message = "";
 
-        VoucherOrder voucherOrder = voucherOrderService.addFlashVoucherOrder(id);
+        VoucherOrder voucherOrder = voucherOrderService.addFlashVoucherOrder(id, uid);
         if (voucherOrder == null) {
             message = "failure";
         } else {
