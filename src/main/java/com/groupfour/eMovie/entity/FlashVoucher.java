@@ -3,18 +3,18 @@ package com.groupfour.eMovie.entity;
 import java.sql.Timestamp;
 
 public class FlashVoucher {
-    private int id;
+    private long id;
     private int stock;
     private Timestamp create_time;
     private Timestamp begin_time;
     private Timestamp end_time;
     private Timestamp update_time;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
