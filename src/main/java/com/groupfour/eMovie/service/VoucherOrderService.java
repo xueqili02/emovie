@@ -4,6 +4,7 @@ import com.groupfour.eMovie.entity.VoucherOrder;
 
 public interface VoucherOrderService {
 
-    VoucherOrder addFlashVoucherOrder(long voucherId, int uid);
+    VoucherOrder addFlashVoucherOrder(Long voucherId, Integer uid);
 
+    VoucherOrder createVoucherOrder(Long voucherId, Integer uid);
 }

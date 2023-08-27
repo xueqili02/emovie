@@ -6,6 +6,7 @@ import com.groupfour.eMovie.entity.FlashVoucher;
 import com.groupfour.eMovie.entity.VoucherOrder;
 import com.groupfour.eMovie.service.VoucherOrderService;
 import com.groupfour.eMovie.utils.RedisIdGenerator;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
 
     @Override
     @Transactional
-    public VoucherOrder addFlashVoucherOrder(long voucherId, int uid) {
+    public VoucherOrder addFlashVoucherOrder(Long voucherId, Integer uid) {
         // 1. 查询优惠券信息
         FlashVoucher flashVoucher = voucherDao.getFlashVoucherById(voucherId);
         // 2. 判断秒杀是否开始
@@ -41,6 +42,24 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
         if (flashVoucher.getStock() < 1) {
             return null;
         }
+
+        synchronized (uid.toString().intern()) {
+            // 获取当前类的代理对象
+            VoucherOrderService proxy = (VoucherOrderService) AopContext.currentProxy();
+            // 7. 返回订单
+            return proxy.createVoucherOrder(voucherId, uid);
+        }
+    }
+
+    @Transactional
+    public VoucherOrder createVoucherOrder(Long voucherId, Integer uid) {
+        // 查看当前用户是否已经下单
+        int count = voucherOrderDao.getCountByUidAndVoucherId(uid, voucherId);
+        if (count > 0) {
+            // 用户已下单
+            return null;
+        }
+
         // 5. 扣减库存
         boolean success = voucherDao.updateStock(voucherId, -1);
         if (!success) {
@@ -54,7 +73,7 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
         voucherOrder.setUser_id(uid);
         voucherOrder.setVoucher_id(voucherId);
         voucherOrderDao.addFlashVoucherOrder(voucherOrder);
-        // 7. 返回订单
+
         return voucherOrder;
     }
 }
