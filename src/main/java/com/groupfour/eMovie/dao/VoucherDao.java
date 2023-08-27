@@ -14,6 +14,7 @@ public interface VoucherDao {
     @Select("SELECT * FROM flash_voucher WHERE id=#{id}")
     FlashVoucher getFlashVoucherById(long id);
 
-    @Update("UPDATE flash_voucher SET stock = stock + #{diff} WHERE id = #{id}")
+    // check if stock > 0, 通过乐观锁防止库存超卖
+    @Update("UPDATE flash_voucher SET stock = stock + #{diff} WHERE id = #{id} AND stock > 0")
     boolean updateStock(long id, int diff);
 }
