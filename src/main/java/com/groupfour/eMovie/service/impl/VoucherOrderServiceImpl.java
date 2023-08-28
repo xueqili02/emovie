@@ -60,7 +60,7 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
         // 创建锁对象
         SimpleRedisLock lock = new SimpleRedisLock(stringRedisTemplate, "order" + uid);
         // 获取锁
-        boolean isLock = lock.tryLock(5);
+        boolean isLock = lock.tryLock(500);
         // 判断是否成功获得锁
         if (!isLock) {
             // 获取失败
@@ -97,7 +97,7 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
         }
         // 6. 创建订单
         VoucherOrder voucherOrder = new VoucherOrder();
-        long orderId = redisIdGenerator.nextId("order");
+        long orderId = redisIdGenerator.nextId("order:");
         voucherOrder.setId(orderId);
         voucherOrder.setUser_id(uid);
         voucherOrder.setVoucher_id(voucherId);
