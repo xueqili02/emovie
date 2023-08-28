@@ -6,8 +6,10 @@ import com.groupfour.eMovie.entity.FlashVoucher;
 import com.groupfour.eMovie.entity.VoucherOrder;
 import com.groupfour.eMovie.service.VoucherOrderService;
 import com.groupfour.eMovie.utils.RedisIdGenerator;
+import com.groupfour.eMovie.utils.distributedLock.SimpleRedisLock;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,9 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
 
     @Autowired
     private RedisIdGenerator redisIdGenerator;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     @Transactional
@@ -43,12 +48,36 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
             return null;
         }
 
-        synchronized (uid.toString().intern()) {
+        // 只适合单体模式
+//        synchronized (uid.toString().intern()) {
+//            // 获取当前类的代理对象
+//            VoucherOrderService proxy = (VoucherOrderService) AopContext.currentProxy();
+//            // 7. 返回订单
+//            return proxy.createVoucherOrder(voucherId, uid);
+//        }
+
+        // 分布式锁
+        // 创建锁对象
+        SimpleRedisLock lock = new SimpleRedisLock(stringRedisTemplate, "order" + uid);
+        // 获取锁
+        boolean isLock = lock.tryLock(5);
+        // 判断是否成功获得锁
+        if (!isLock) {
+            // 获取失败
+            return null;
+        }
+        try {
             // 获取当前类的代理对象
             VoucherOrderService proxy = (VoucherOrderService) AopContext.currentProxy();
             // 7. 返回订单
             return proxy.createVoucherOrder(voucherId, uid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 最后释放锁
+            lock.unlock();
         }
+        return null;
     }
 
     @Transactional

@@ -8,6 +8,7 @@ public class ProjectConstants {
     public static final String REDIS_MOVIE_KEY_PREFIX = "emovie:movie:id:";
     public static final String REDIS_LOCK_KEY_PREFIX = "emovie:lock:movie:id:";
     public static final String REDIS_INCR_KEY_PREFIX = "emovie:incr:";
+    public static final String REDIS_DISTRIBUTED_LOCK_KEY_PREFIX = "emovie:lock:";
 
     // redis TTL
     public static final Long REDIS_LOGIN_TTL = 5L;
