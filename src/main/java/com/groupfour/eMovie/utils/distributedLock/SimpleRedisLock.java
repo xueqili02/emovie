@@ -1,5 +1,6 @@
 package com.groupfour.eMovie.utils.distributedLock;
 
+import cn.hutool.core.lang.UUID;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.concurrent.TimeUnit;
@@ -12,6 +13,8 @@ public class SimpleRedisLock implements ILock{
 
     private String name;
 
+    private static final String ID_PREFIX = UUID.randomUUID().toString(true) + "-";
+
     public SimpleRedisLock(StringRedisTemplate stringRedisTemplate, String name) {
         this.stringRedisTemplate = stringRedisTemplate;
         this.name = name;
@@ -19,14 +22,18 @@ public class SimpleRedisLock implements ILock{
 
     @Override
     public boolean tryLock(long timeoutSec) {
-        long threadId = Thread.currentThread().getId();
+        String threadId = ID_PREFIX + Thread.currentThread().getId();
         Boolean success = stringRedisTemplate.opsForValue().
-                setIfAbsent(REDIS_DISTRIBUTED_LOCK_KEY_PREFIX + name, threadId + "", timeoutSec, TimeUnit.SECONDS);
+                setIfAbsent(REDIS_DISTRIBUTED_LOCK_KEY_PREFIX + name, threadId, timeoutSec, TimeUnit.SECONDS);
         return Boolean.TRUE.equals(success);
     }
 
     @Override
     public void unlock() {
-        stringRedisTemplate.delete(REDIS_DISTRIBUTED_LOCK_KEY_PREFIX + name);
+        String threadId = ID_PREFIX + Thread.currentThread().getId();
+        String value = stringRedisTemplate.opsForValue().get(REDIS_DISTRIBUTED_LOCK_KEY_PREFIX + name);
+        if (threadId.equals(value)) {
+            stringRedisTemplate.delete(REDIS_DISTRIBUTED_LOCK_KEY_PREFIX + name);
+        }
     }
 }
