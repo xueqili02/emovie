@@ -7,6 +7,8 @@ import com.groupfour.eMovie.entity.VoucherOrder;
 import com.groupfour.eMovie.service.VoucherOrderService;
 import com.groupfour.eMovie.utils.RedisIdGenerator;
 import com.groupfour.eMovie.utils.distributedLock.SimpleRedisLock;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -14,6 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
+
+import static com.groupfour.eMovie.utils.ProjectConstants.REDIS_DISTRIBUTED_LOCK_KEY_PREFIX;
 
 @Service("VoucherOrderServiceImpl")
 public class VoucherOrderServiceImpl implements VoucherOrderService {
@@ -30,9 +35,12 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    private RedissonClient redissonClient;
+
     @Override
     @Transactional
-    public VoucherOrder addFlashVoucherOrder(Long voucherId, Integer uid) {
+    public VoucherOrder addFlashVoucherOrder(Long voucherId, Integer uid) throws InterruptedException {
         // 1. 查询优惠券信息
         FlashVoucher flashVoucher = voucherDao.getFlashVoucherById(voucherId);
         // 2. 判断秒杀是否开始
@@ -57,10 +65,15 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
 //        }
 
         // 分布式锁
-        // 创建锁对象
-        SimpleRedisLock lock = new SimpleRedisLock(stringRedisTemplate, "order" + uid);
-        // 获取锁
-        boolean isLock = lock.tryLock(500);
+        // (1) 使用自己设计的锁
+//        // 创建锁对象
+//        SimpleRedisLock lock = new SimpleRedisLock(stringRedisTemplate, "order" + uid);
+//        // 获取锁
+//        boolean isLock = lock.tryLock(500);
+
+        // (2) 使用Redisson
+        RLock lock = redissonClient.getLock(REDIS_DISTRIBUTED_LOCK_KEY_PREFIX + "order" + uid);
+        boolean isLock = lock.tryLock(5L, 10L, TimeUnit.SECONDS);
         // 判断是否成功获得锁
         if (!isLock) {
             // 获取失败
