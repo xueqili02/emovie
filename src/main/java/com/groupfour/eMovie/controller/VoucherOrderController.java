@@ -14,7 +14,7 @@ public class VoucherOrderController {
     private VoucherOrderService voucherOrderService;
 
     @PostMapping("/flash/id/{id}/uid/{uid}")
-    public Result flashVoucherOrder(@PathVariable long id, @PathVariable int uid) {
+    public Result flashVoucherOrder(@PathVariable long id, @PathVariable int uid) throws InterruptedException {
         HttpStatus code = HttpStatus.OK;
         String message = "";
 
