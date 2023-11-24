@@ -1,4 +1,4 @@
-# eMovie - Movie Recommendation System @Group Four
+# eMovie - Movie Recommendation System
 
 backend - Spring Boot + MySQL + MyBatis + Lucene + Redis
 
