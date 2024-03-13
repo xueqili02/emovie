@@ -112,8 +112,8 @@ public class VoucherOrderServiceImpl implements VoucherOrderService {
         VoucherOrder voucherOrder = new VoucherOrder();
         long orderId = redisIdGenerator.nextId("order:");
         voucherOrder.setId(orderId);
-        voucherOrder.setUser_id(uid);
-        voucherOrder.setVoucher_id(voucherId);
+        voucherOrder.setUserId(uid);
+        voucherOrder.setVoucherId(voucherId);
         voucherOrderDao.addFlashVoucherOrder(voucherOrder);
 
         return voucherOrder;

@@ -1,69 +1,41 @@
 package com.groupfour.eMovie.entity;
 
-import java.sql.Timestamp;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.*;
 
+import java.time.LocalDateTime;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@TableName("VoucherOrder")
 public class VoucherOrder {
-    private long id;
-    private int user_id;
-    private long voucher_id;
-    private byte status;
-    private Timestamp create_time;
-    private Timestamp pay_time;
-    private Timestamp use_time;
 
-    public long getId() {
-        return id;
-    }
+    @TableId(value = "ID", type = IdType.AUTO)
+    private Long id;
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    @TableId(value = "USER_ID")
+    private Integer userId;
 
-    public int getUser_id() {
-        return user_id;
-    }
+    @TableId(value = "VOUCHER_ID")
+    private Long voucherId;
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
+    @TableId(value = "STATUS")
+    private Integer status;
 
-    public long getVoucher_id() {
-        return voucher_id;
-    }
+    @TableId(value = "PAY_TIME")
+    private LocalDateTime payTime;
 
-    public void setVoucher_id(long voucher_id) {
-        this.voucher_id = voucher_id;
-    }
+    @TableId(value = "USE_TIME")
+    private LocalDateTime useTime;
 
-    public byte getStatus() {
-        return status;
-    }
+    @TableId(value = "CREATE_TIME")
+    private LocalDateTime createTime;
 
-    public void setStatus(byte status) {
-        this.status = status;
-    }
-
-    public Timestamp getCreate_time() {
-        return create_time;
-    }
-
-    public void setCreate_time(Timestamp create_time) {
-        this.create_time = create_time;
-    }
-
-    public Timestamp getPay_time() {
-        return pay_time;
-    }
-
-    public void setPay_time(Timestamp pay_time) {
-        this.pay_time = pay_time;
-    }
-
-    public Timestamp getUse_time() {
-        return use_time;
-    }
-
-    public void setUse_time(Timestamp use_time) {
-        this.use_time = use_time;
-    }
+    @TableId(value = "LAST_MOD_TIME")
+    private LocalDateTime lastModTime;
 }
